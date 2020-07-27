@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Log.v("IbmPush", "Successfully registered for push notifications with id:" + ServerHelper.getDeviceId(m_mainActivity));
+                Log.v("IbmPush", "Successfully registered for push notifications with device id:" + ServerHelper.getDeviceId(m_mainActivity));
                 // Start listening to notification listener now that registration has succeeded
                 push.listen(notificationListener);
             }

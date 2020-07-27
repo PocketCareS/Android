@@ -1,13 +1,10 @@
 package com.ub.pocketcares.network;
 
-import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.Objects;
 
-import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
