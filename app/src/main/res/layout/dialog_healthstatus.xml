@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#6D7B8D" />
+
+    <ExpandableListView
+        android:id="@+id/dialog_health_expandlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:transcriptMode="disabled"
+        android:groupIndicator="@null"
+        android:drawSelectorOnTop="false" >
+    </ExpandableListView>
+    
+    <!--  
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#6D7B8D" />
+    -->
+</LinearLayout>

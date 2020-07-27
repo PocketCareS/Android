@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="lvHeaderTextColor">#eef6fc</color>
+    <color name="primaryTextColor">#373737</color>
+    <color name="secondaryTextColor">#b6d9f3</color>
+    <color name="goblinGreen">#168686</color>
+    <color name="black">#202020</color>
+    <color name="black0">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="grey">#5e5d5d</color>
+    <color name="lightgrey">#D3D3D3</color>
+    <color name="LightSlateGray">#778899</color>
+    <color name="DarkSlateGray">#2F4F4F</color>
+    <color name="slateGray">#708090</color>
+    <color name="dimGray">#696969</color>
+    <color name="darkGray">#A9A9A9</color>
+
+    <color name="lvHeaderDividerColor">#168686</color>
+    <color name="lvDividerColor">#E0E0E0</color>
+    <color name="background">#e3e3e3</color>
+    <color name="TileBackgraound">#4987b6</color>
+    <color name="TextColor">#333333</color>
+    <color name="ButtonText">#D9D9D9</color>
+    <color name="ListBack">#FFFFFF</color>
+
+
+    <color name="royalblue">#4169E1</color>
+    <color name="dodgerblue">#1E90FF</color>
+    <color name="skyblue">#87CEEB</color>
+    <color name="deepskyblue">#00BFFF</color>
+
+    <color name="black_overlay">#666666</color>
+    <color name="nav_color">#666666</color>
+    <color name="ub">#005bbb</color>
+</resources>

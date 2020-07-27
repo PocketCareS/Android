@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="num1">25</integer>
+    <integer name="num2">5</integer>
+    <integer name="num3">20</integer>
+    <integer name="Rank">200000</integer>
+    <integer name="Level">5</integer>
+</resources>

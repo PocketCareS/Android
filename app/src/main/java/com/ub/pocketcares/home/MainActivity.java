@@ -1,0 +1,449 @@
+package com.ub.pocketcares.home;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
+import com.ub.pocketcares.backend.DailyStatusDatabaseHelper;
+import com.ub.pocketcares.bluetoothBeacon.CloseContactFragment;
+import com.ub.pocketcares.bluetoothBeacon.MonitoringApplication;
+import com.ub.pocketcares.R;
+import com.ub.pocketcares.bluetoothBeacon.PostalCodeService;
+import com.ub.pocketcares.receiver.BootBroadCastReceiver;
+import com.ub.pocketcares.survey.HealthData;
+import com.ub.pocketcares.utility.LogTags;
+import com.ub.pocketcares.utility.PreferenceTags;
+import com.ub.pocketcares.utility.Utility;
+
+import static com.ub.pocketcares.home.HomeTabFragment.createReportHealthDialog;
+
+public class MainActivity extends AppCompatActivity {
+    public static final int NOTI_HEALTHSTATUS = 2;
+    public static final int ALARMID_DAILYHEALTH = 0;
+    public static final int ALARMID_DAILY12OCLOCK = 2;
+    public static final int ALARMID_PERIODHOUR = 4;
+    public static final int ALARMID_OTHER = 99;
+    public static final String ACTION_APP_START = "android.intent.action.appstart";
+    public static final String INTENTEXTRA = "intentextra";
+    public static final String PHONETYPE_NONE = "NONE";
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_ENABLE_LOCATION = 2;
+    public static final int LOCATION_PERMISSION_CODE = 101;
+    private static final int PERMISSION_RESULT = 3;
+    private static final int UPDATE_CODE = 4;
+
+    public static Toast global_Toast;
+    public static MainActivity m_mainActivity = null;
+    public static boolean m_isActive = false;
+    public static final String CHANNEL_ID = "default-channel";
+    public static final String CHANNEL_ID_2 = "high-channel";
+    public static final String BLUETOOTH_DIALOG = "com.ub.pocketcares.bluetoothDialog";
+    private BluetoothAdapter myDevice;
+    private BroadcastReceiver bluetoothLocationDialogReceiver;
+    private AppUpdateManager appUpdateManager;
+    private InstallStateUpdatedListener installStateUpdatedListener;
+
+    @SuppressLint("ShowToast")
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        installStateUpdatedListener = state -> {
+            // Log state or install the update.
+            if (state.installStatus() == InstallStatus.DOWNLOADED) {
+                popupForCompleteUpdate();
+            }
+        };
+
+        myDevice = BluetoothAdapter.getDefaultAdapter();
+        setContentView(R.layout.activity_main);
+        global_Toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
+        m_mainActivity = this;
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        startCloseEncounterScan();
+
+        ComponentName receiver = new ComponentName(this, BootBroadCastReceiver.class);
+        PackageManager pm = getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.health_summary_item, R.id.close_contacts,
+                R.id.sessions, R.id.navigation_settings)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+
+        SharedPreferences devPreference = PreferenceManager.getDefaultSharedPreferences(m_mainActivity);
+        boolean devLog = devPreference.getBoolean("devLogVisible", false);
+        if (!devLog) {
+            Menu nav_Menu = navView.getMenu();
+            nav_Menu.findItem(R.id.sessions).setVisible(false);
+        }
+
+        ColorStateList csl = new ColorStateList(
+                new int[][]{
+                        new int[]{-android.R.attr.state_checked}, // unchecked
+                        new int[]{android.R.attr.state_checked}  // checked
+                },
+                new int[]{
+                        Color.WHITE,
+                        Color.BLACK
+                }
+        );
+        navView.setItemTextColor(csl);
+        navView.setItemIconTintList(csl);
+
+
+        View view = getLayoutInflater().inflate(R.layout.action_bar, null);
+        androidx.appcompat.app.ActionBar.LayoutParams params = new androidx.appcompat.app.ActionBar.LayoutParams(
+                androidx.appcompat.app.ActionBar.LayoutParams.WRAP_CONTENT,
+                androidx.appcompat.app.ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+
+        TextView Title = view.findViewById(R.id.actionbar_title);
+        Title.setText(getString(R.string.app_name));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.ub)));
+        getSupportActionBar().setCustomView(view, params);
+        getSupportActionBar().setDisplayShowCustomEnabled(true); //show custom title
+
+        ImageView reportHealth = view.findViewById(R.id.report_image);
+        reportHealth.setVisibility(View.VISIBLE);
+        reportHealth.setOnClickListener(v -> {
+            Log.v(LogTags.GENERALINFO, "Inside button onClick!");
+            createReportHealthDialog(m_mainActivity);
+        });
+
+        // load data submission status
+        SharedPreferences datastatus = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor ed = datastatus.edit();
+
+        // set first run time
+        Calendar now = Calendar.getInstance();
+        ed.putInt(PreferenceTags.STATUS_ISTRUN_TIME, Utility.getCalendarInt(now));
+
+        // set first run false
+        ed.putBoolean(PreferenceTags.STATUS_1STRUN, false);
+
+        ed.putLong(PreferenceTags.WARNING_LAST_TIME, System.currentTimeMillis());
+
+        ed.apply();
+
+        sendBroadcast(new Intent(ACTION_APP_START));
+        Runnable backgroundWork = () -> {
+            MonitoringApplication monitoringApplication = (MonitoringApplication) getApplicationContext();
+            monitoringApplication.registerBluetoothLocationStateReceiver();
+            monitoringApplication.registerScanStatusReceiver();
+            monitoringApplication.registerNotificationReceiver();
+            monitoringApplication.registerNotificationSnoozeReceiver();
+            registerBluetoothLocationDialogReceiver();
+        };
+        new Thread(backgroundWork).start();
+        SharedPreferences notificationPref = PreferenceManager.getDefaultSharedPreferences(m_mainActivity);
+        long value = notificationPref.getLong("reminderAlarmValue", -1);
+        if (value >= 0) {
+            MonitoringApplication monitoringApplication = (MonitoringApplication) getApplicationContext();
+            Calendar snoozeOverTime = Calendar.getInstance();
+            snoozeOverTime.setTimeInMillis(value);
+            monitoringApplication.createNotificationSnoozeOverAlarm(m_mainActivity, snoozeOverTime);
+        }
+    }
+
+    public void checkAppUpdate() {
+        // Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            Log.v("Update", "Update Priority: " + appUpdateInfo.updatePriority());
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                // Request the update.
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                            AppUpdateType.FLEXIBLE,
+                            // The current activity making the update request.
+                            this,
+                            // Include a request code to later monitor this update request.
+                            UPDATE_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    Toast.makeText(this, "Update Failed!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                popupForCompleteUpdate();
+            }
+        });
+    }
+
+    private void popupForCompleteUpdate() {
+        DialogInterface.OnClickListener onClickListener = (dialog, which) -> appUpdateManager.completeUpdate();
+        DialogInterface.OnDismissListener onDismissListener = (dialog) -> appUpdateManager.completeUpdate();
+        Utility.createDialog(m_mainActivity, "Update Downloaded",
+                "PocketCare S has successfully downloaded the update, please select OK to install it.",
+                onClickListener, onDismissListener);
+    }
+
+    public void onSummaryClick(View view) {
+        NavController navController = Navigation.findNavController(MainActivity.m_mainActivity, R.id.nav_host_fragment);
+        if (view.getId() == R.id.encounterSummary) {
+            navController.navigate(R.id.close_contacts);
+        } else if (view.getId() == R.id.healthSummary) {
+            if (HealthData.isHealthDailySubmitted(m_mainActivity)) {
+                navController.navigate(R.id.health_summary_item);
+            } else {
+                createReportHealthDialog(m_mainActivity);
+            }
+        }
+    }
+
+    private void registerBluetoothLocationDialogReceiver() {
+        bluetoothLocationDialogReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String dialogValue = intent.getStringExtra("dialog");
+                if (dialogValue.equals("bluetooth")) {
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                } else if (dialogValue.equals("location")) {
+                    locationEnableDisplay();
+                } else if (dialogValue.equals("location_permission")) {
+                    DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
+                        Intent location_permission_settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        location_permission_settings.setData(uri);
+                        startActivityForResult(location_permission_settings, PERMISSION_RESULT);
+                    };
+                    Utility.createDialog(m_mainActivity, "Enable Location Permission",
+                            "You need to enable location permission to see close encounters", onClickListener);
+
+                }
+            }
+        };
+        m_mainActivity.registerReceiver(bluetoothLocationDialogReceiver, new IntentFilter(BLUETOOTH_DIALOG));
+    }
+
+    private void locationEnableDisplay() {
+        DialogInterface.OnClickListener positiveListener = (dialog, which) -> {
+            dialog.dismiss();
+            Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivityForResult(locationIntent, REQUEST_ENABLE_LOCATION);
+        };
+        DialogInterface.OnClickListener negativeListener = (dialog, which) -> {
+            dialog.cancel();
+            Toast.makeText(m_mainActivity, getString(R.string.location_off), Toast.LENGTH_SHORT).show();
+        };
+        Utility.createDialog(m_mainActivity, "Location Turned Off", getString(R.string.location_off),
+                positiveListener, negativeListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAppUpdate();
+        Intent updateUI = new Intent(CloseContactFragment.ACTION_NOTIFY_BEACON_UI_UPDATE);
+        sendBroadcast(updateUI);
+        m_isActive = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        m_isActive = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (appUpdateManager != null) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
+        m_isActive = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        m_isActive = false;
+        unregisterReceiver(bluetoothLocationDialogReceiver);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void createNotificationChannel(String chanel, String name, int importance, Context context) {
+        NotificationChannel notificationChannel = new NotificationChannel(chanel, name, importance);
+        NotificationManager manager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(notificationChannel);
+    }
+
+    private void startCloseEncounterScan() {
+        LocationManager locationManager = (LocationManager) m_mainActivity.getSystemService(Context.LOCATION_SERVICE);
+        boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean locationEnabled = isGpsEnabled || isNetworkEnabled;
+
+        MonitoringApplication application = (MonitoringApplication) getApplicationContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requestPermission(application, locationEnabled, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION});
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermission(application, locationEnabled, new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
+        }
+    }
+
+    public static void postalServiceIntent(final Intent serviceIntent, final Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent);
+        } else {
+            context.startService(serviceIntent);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestPermission(MonitoringApplication application, boolean locationEnabled,
+                                   final String[] perms) {
+        boolean bothEnabled = false;
+        boolean showRationale = false;
+        for (String permission : perms) {
+            bothEnabled = this.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
+            showRationale = this.shouldShowRequestPermissionRationale(permission);
+        }
+        if (bothEnabled) {
+            // Perfect
+            if (myDevice != null) {
+                if (myDevice.isEnabled() && locationEnabled) {
+                    Intent serviceIntent = new Intent(m_mainActivity, PostalCodeService.class);
+                    postalServiceIntent(serviceIntent, m_mainActivity);
+                    application.startTransmissionScan();
+                } else if (!myDevice.isEnabled()) {
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                } else if (!locationEnabled) {
+                    locationEnableDisplay();
+                }
+            }
+        } else {
+            application.stopTransmissionScan(false);
+            if (showRationale) {
+                DialogInterface.OnDismissListener dismissListener = dialog -> requestPermissions(perms, LOCATION_PERMISSION_CODE);
+                Utility.createDialog(m_mainActivity, "This app needs background location access",
+                        "Please grant location access so this app can detect beacons even in the background.",
+                        null, dismissListener);
+            } else {
+                Toast.makeText(m_mainActivity, "Permanently Denied Permission Request.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static boolean getTermAcceptance(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PreferenceTags.STATUS_ACCEPTENCE, false);
+    }
+
+    public static Context getAppContext() {
+        return m_mainActivity;
+    }
+
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        assert manager != null;
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCloseEncounterScan();
+            } else {
+                Toast.makeText(m_mainActivity, "Location Permission not granted", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v("Perms", "Activity Result: " + requestCode);
+        if (requestCode == REQUEST_ENABLE_BT || requestCode == REQUEST_ENABLE_LOCATION ||
+                requestCode == PERMISSION_RESULT) {
+            if (resultCode == RESULT_OK) {
+                startCloseEncounterScan();
+            }
+        }
+        if (requestCode == UPDATE_CODE) {
+            if (resultCode == RESULT_OK) {
+                appUpdateManager.registerListener(installStateUpdatedListener);
+            }
+        }
+    }
+
+}

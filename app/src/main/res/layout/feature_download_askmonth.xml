@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/feature_download_askmonth_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="3dp"
+        android:text="@string/download_description"
+        android:textSize="18sp" >
+	</TextView>
+
+    <View
+        android:id="@+id/feature_download_askmoth_divider1"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/feature_download_askmonth_description"
+        style="@style/dividerMedium" />
+
+    <LinearLayout
+        android:id="@+id/feature_download_askmonth_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/feature_download_askmoth_divider1"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:weightSum="2" >
+
+        <Spinner
+            android:id="@+id/feature_download_askmonth_year"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="2dp" />
+
+        <Spinner
+            android:id="@+id/feature_download_askmonth_month"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="2dp" />
+    </LinearLayout>
+
+</RelativeLayout>

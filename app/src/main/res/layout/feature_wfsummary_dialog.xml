@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/feature_wfsummary_title"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        style="@style/dialogTextStyle"
+        android:gravity="center_vertical"
+         />
+    
+    <LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/radiooptionHeight"
+	    android:paddingRight="5dp"
+    	android:paddingLeft="5dp"
+	    android:weightSum="1"
+	    android:orientation="horizontal" >
+	    
+	    <TextView
+	        android:id="@+id/feature_wfsummary_col1"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:textStyle="bold|italic"
+	        android:textColor="@color/skyblue"
+	        android:gravity="center_vertical"
+	        style="@style/dialogTextStyle"
+	        android:maxLines="1"
+	        android:layout_weight="0.7" />
+	    
+	    <TextView
+	        android:id="@+id/feature_wfsummary_col2"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:textStyle="bold|italic"
+	        android:textColor="@color/skyblue"
+	        android:gravity="center_vertical"
+	        style="@style/dialogTextStyle"
+	        android:maxLines="1"
+	        android:layout_weight="0.3"
+	        />
+	</LinearLayout>
+	
+    <ListView
+        android:id="@+id/feature_wfsummary_wflist"
+        android:layout_width="match_parent"
+        android:paddingRight="5dp"
+    	android:paddingLeft="5dp"
+    	android:paddingBottom="5dp"
+        android:layout_height="300dp"
+        />
+
+</LinearLayout>

@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp" >
+
+    <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pie_chart_controlll"
+        android:layout_below="@+id/pie_chart_title" >
+
+    </lecho.lib.hellocharts.view.PieChartView>
+
+    <!-- 
+    <Spinner
+        android:id="@+id/pie_chart_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignLeft="@+id/chart"
+        android:layout_alignParentBottom="true" />
+	 -->
+
+    <LinearLayout
+        android:id="@+id/pie_chart_controlll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:weightSum="2" >
+
+        <Spinner
+            android:id="@+id/pie_chart_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+
+        <Button
+            android:id="@+id/pie_chart_return"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/ret"
+            android:gravity="center"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pie_chart_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/chart"
+        android:layout_alignRight="@+id/chart"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="18sp" />
+	 
+</RelativeLayout>

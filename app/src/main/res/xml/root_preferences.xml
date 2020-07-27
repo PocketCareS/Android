@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/notification_header">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="close_encounter_notification_status"
+            android:summary="Notifies when a close encounter session exceeds 10 minutes"
+            android:title="@string/notification_reminder_title" />
+
+        <ListPreference
+            android:dependency="close_encounter_notification_status"
+            android:entries="@array/snooze_labels"
+            android:entryValues="@array/snooze_values"
+            android:key="close_encounter_snooze_option"
+            app:title="Options to Snooze Notifications" />
+
+        <com.ub.pocketcares.settings.TimePreference
+            style="@style/DialogPreference"
+            android:defaultValue="-1"
+            android:key="health_reminder_time"
+            android:summary="Schedule a time for daily submissions"
+            android:title="Health Report Reminder" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="close_encounter_advanced"
+        app:iconSpaceReserved="false"
+        app:initialExpandedChildrenCount="1"
+        app:title="@string/scanning_header">
+
+        <SwitchPreferenceCompat
+            android:key="stop_off_campus_scan"
+            android:summaryOff="You can pause Off-campus scanning by turning on this option"
+            android:summaryOn="You can resume Off-campus scanning by turning off this option"
+            android:title="Off-Campus Scanning" />
+
+        <com.ub.pocketcares.settings.TimeRangePreference
+            android:key="downtime_start"
+            android:summary="Schedule a time to turn off scanning after 8 PM"
+            android:title="Night-Time Start" />
+
+        <com.ub.pocketcares.settings.TimeRangePreference
+            android:key="downtime_end"
+            android:summary="Schedule a time to resume scanning before 8 AM"
+            android:title="Night-Time End" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

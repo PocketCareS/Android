@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "858436935062",
+    "firebase_url": "https://pocketcare-1889b.firebaseio.com",
+    "project_id": "pocketcare-1889b",
+    "storage_bucket": "pocketcare-1889b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858436935062:android:628fe8d775b5cc0fb751b7",
+        "android_client_info": {
+          "package_name": "com.pocketcareplus.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858436935062-adq1urn128jho3e2qroki742ljg6skhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCQTv84Or_oZL6Gh3aEHV7KfXzCvFjyAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858436935062-adq1urn128jho3e2qroki742ljg6skhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "858436935062-ogibvva6lidcqb3np8ptj9huafcs5rf3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "edu.buffalo.PocketCare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858436935062:android:45b9ab44255ab141b751b7",
+        "android_client_info": {
+          "package_name": "com.ub.pocketcares"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858436935062-adq1urn128jho3e2qroki742ljg6skhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCQTv84Or_oZL6Gh3aEHV7KfXzCvFjyAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858436935062-adq1urn128jho3e2qroki742ljg6skhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "858436935062-ogibvva6lidcqb3np8ptj9huafcs5rf3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "edu.buffalo.PocketCare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

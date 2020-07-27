@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:title="REFERRAL" >
+    
+    <PreferenceCategory 
+        android:title="MY REFERER">
+	    <Preference
+	        android:key="RefererHashId"
+	        android:title="Enter my referer's hash ID"
+	        android:summary=""
+	    />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="MY INVITATION">
+	    <Preference
+	        android:key="HashId"
+	        android:title="My Unique Hash ID"
+	        android:summary=""
+	    />
+	    
+	    <Preference
+	        android:key="refernum"
+	        android:title="My valid invitations"
+	    />
+	    
+	    <Preference
+	        android:key="rEmail"
+	        android:title="Invite by mail"
+	    />
+    </PreferenceCategory>
+    
+</PreferenceScreen>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_run"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/health_summary_item"
+        android:icon="@drawable/heart_updated"
+        android:title="@string/health_summary" />
+
+    <item
+        android:id="@+id/close_contacts"
+        android:icon="@drawable/distance_nav"
+        android:title="@string/close_contacts" />
+
+    <item
+        android:id="@+id/sessions"
+        android:icon="@drawable/dev2"
+        android:title="Dev options"
+        />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_gear"
+        android:title="@string/title_notifications" />
+</menu>

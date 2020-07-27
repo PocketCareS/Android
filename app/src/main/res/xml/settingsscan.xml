@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:title="SCAN SETTINGS" >
+    
+    <PreferenceCategory 
+        android:title="OVERVIEW">
+        
+        <com.ub.pocketcares.settings.MySwitchPreference
+            android:key="setting_service"
+            android:title="Scan service"
+        />
+        
+        <SwitchPreference
+            android:dependency="setting_service"
+            android:key="setting_nightoff"
+            android:title="Night mode"
+            android:defaultValue="true"
+        />
+        
+<!--        <Preference-->
+<!--            android:key="setting_uprate"-->
+<!--            android:title="Current usage point rate"-->
+<!--            android:summary=""-->
+<!--        />-->
+            
+        
+    </PreferenceCategory>
+
+<!--    <PreferenceCategory-->
+<!--        android:title="BLUETOOTH">-->
+
+<!--        <SwitchPreference-->
+<!--            android:dependency="setting_service"-->
+<!--            android:key="setting_bluetooth"-->
+<!--            android:title="Bluetooth"-->
+<!--            android:defaultValue="true"-->
+<!--        />-->
+
+<!--        <ListPreference-->
+<!--            android:dependency="setting_bluetooth"-->
+<!--            android:key="setting_fq_bluetooth"-->
+<!--            android:title="Bluetooth scan frequency"-->
+<!--            android:entries="@array/op530_human"-->
+<!--            android:entryValues="@array/op530_values"-->
+<!--            android:defaultValue="@string/setting_fq_default_bluetooth"-->
+<!--        />-->
+
+<!--        <SwitchPreference-->
+<!--            android:dependency="setting_bluetooth"-->
+<!--            android:key="setting_after_bt_scan"-->
+<!--            android:title="Post scan state"-->
+<!--            android:defaultValue="false"-->
+<!--        />-->
+<!--    </PreferenceCategory>-->
+    
+    <PreferenceCategory 
+        android:title="WIFI">
+        
+        <SwitchPreference
+            android:dependency="setting_service"
+            android:key="setting_wifi"
+            android:title="WiFi"
+            android:defaultValue="true"
+        />
+        
+        <ListPreference
+            android:dependency="setting_wifi"
+            android:key="setting_fq_wifi"
+            android:title="WiFi scan frequency"
+            android:entries="@array/op530_human"
+            android:entryValues="@array/op530_values"
+            android:defaultValue="@string/setting_fq_default_wifi"
+        />
+            
+    </PreferenceCategory>
+
+    <PreferenceCategory 
+        android:title="GPS">
+        
+        <SwitchPreference
+            android:dependency="setting_service"
+            android:key="setting_gps"
+            android:title="GPS"
+            android:defaultValue="true"
+        />
+            
+        <ListPreference
+            android:dependency="setting_gps"
+            android:key="setting_fq_gps"
+            android:title="GPS scan frequency"
+            android:entries="@array/op530_human"
+            android:entryValues="@array/op530_values"
+            android:defaultValue="@string/setting_fq_default_gps"
+        />
+    </PreferenceCategory>
+    
+        <PreferenceCategory 
+	        android:title="ACTIVITY RECOGNITION">
+	        
+	        <com.ub.pocketcares.settings.MySwitchPreference
+	            android:dependency="setting_service"
+	            android:key="setting_activityrecognition"
+	            android:title="Activity Recognizer"
+	            android:defaultValue="true"
+	        />
+	            
+	        <ListPreference
+	            android:dependency="setting_activityrecognition"
+	            android:key="setting_fq_activityrecognition"
+	            android:title="Activity Recoginition frequency"
+	            android:entries="@array/op530_human"
+	            android:entryValues="@array/op530_values"
+	            android:defaultValue="@string/setting_fq_default_activityrecognition"
+	        />
+	    </PreferenceCategory>
+    
+    
+</PreferenceScreen>

@@ -1,0 +1,35 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".MainActivity"
+    style="@style/listViewItem"
+    android:background="@android:drawable/list_selector_background"
+    >
+
+    <ImageButton
+        style="@style/lvFeatureAboutStyle"
+        android:background="@android:drawable/list_selector_background"
+        android:src="@drawable/ic_action_about"
+        android:id="@+id/lv_item_imagedetail"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:contentDescription="@string/content_description"
+        />
+
+    <TextView
+        android:id="@+id/lv_item_tv"
+        style="@style/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/lv_item_imagedetail"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textIsSelectable="false" />
+
+</RelativeLayout>

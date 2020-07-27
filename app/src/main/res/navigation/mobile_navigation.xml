@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.ub.pocketcares.home.HomeTabFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/home_fragment_view" />
+
+    <fragment
+        android:id="@+id/health_summary_item"
+        android:name="com.ub.pocketcares.home.HealthSummary"
+        android:label="@string/health_summary"
+        tools:layout="@layout/health_summary_row" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.ub.pocketcares.settings.SettingTabFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/settings_fragment_view" />
+
+    <fragment
+        android:id="@+id/close_contacts"
+        android:name="com.ub.pocketcares.bluetoothBeacon.CloseContactFragment"
+        android:label="Bluetooth Devices"
+        tools:layout="@layout/close_contact_fragment" />
+
+</navigation>

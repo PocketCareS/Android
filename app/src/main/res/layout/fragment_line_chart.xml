@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp" >
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.55" >
+    </lecho.lib.hellocharts.view.LineChartView>
+
+    <LinearLayout
+        android:id="@+id/line_chart_controlll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:weightSum="2" >
+
+        <Spinner
+            android:id="@+id/line_chart_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+
+        <Button
+            android:id="@+id/line_chart_return"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="@string/ret"
+            android:gravity="center"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+        
+    </LinearLayout>
+    
+    <!--  
+    <Spinner
+        android:id="@+id/data_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:prompt="@string/health_data_spinner_prompt" />
+	-->
+	
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:title="PREFERENCE SETTINGS" >
+    
+    <PreferenceCategory
+        android:title="NETWORK">
+        
+        <com.ub.pocketcares.settings.MySwitchPreference
+            android:key="gen_setting_nonewifi"
+            android:title="Allow non-WiFi"
+            android:defaultValue="false"
+        />
+        
+    </PreferenceCategory>
+    
+    
+    <PreferenceCategory
+        android:title="CACHE">
+        
+        <Preference
+            android:key="gen_setting_localcache"
+            android:title="Local cache"
+        />
+        
+        <ListPreference 
+            android:key="gen_setting_cacheupload"
+            android:title="Local datafile upload rule"
+            android:entries="@array/gen_cache_upload"
+	        android:entryValues="@array/gen_cache_upload"
+	        android:defaultValue="3"
+        />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="HOME TAB CONTENTS">
+        
+        <SwitchPreference
+            android:key="home_tab_welcome"
+            android:title="Welcome"
+            android:defaultValue="false"
+        />
+        
+        <SwitchPreference
+            android:key="home_tab_tips"
+            android:title="Tips"
+            android:defaultValue="false"
+        />
+        
+	</PreferenceCategory>
+    
+</PreferenceScreen>

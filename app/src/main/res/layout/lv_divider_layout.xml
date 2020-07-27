@@ -1,0 +1,15 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/lvSectionDividerHeight"
+    android:clickable="false"
+    >
+
+    <View
+        android:id="@+id/lv_dv_blank"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/lvSectionDividerHeight"
+        />
+
+</RelativeLayout>

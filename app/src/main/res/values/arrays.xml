@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="snooze_labels">
+        <item>@string/snooze_none_label</item>
+        <item>@string/snooze_hour_label</item>
+        <item>@string/snooze_day_label</item>
+    </array>
+
+    <array name="snooze_values">
+        <item>@string/snooze_none_value</item>
+        <item>@string/snooze_hour_value</item>
+        <item>@string/snooze_day_value</item>
+    </array>
+</resources>

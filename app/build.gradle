@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+buildscript {
+    repositories {
+        google()
+    }
+}
+
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.ub.pocketcares"
+        versionCode 26
+        versionName "1.3.0"
+        minSdkVersion 21
+        targetSdkVersion 29
+        multiDexEnabled true
+        resValue 'string', 'update_id', 'android-pocketcare'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debug {
+            debuggable true
+        }
+    }
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://highsoft.bintray.com/Highcharts"
+    }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.navigation:navigation-fragment:2.3.0'
+    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4'
+    implementation "androidx.work:work-runtime:2.3.4"
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.android.support:customtabs:29.0.0'
+    // For developers using AndroidX in their applications
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    // For developers using the Android Support Library
+//    implementation 'com.google.android.libraries.places:places:2.2.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'me.riddhimanadib.form-master:form-master:1.1.0'
+    //https://github.com/adib2149/FormMaster
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
+    //noinspection GradleDynamicVersion
+    implementation 'org.altbeacon:android-beacon-library:2+'
+    implementation 'com.highsoft.highcharts:highcharts:8.0'
+    implementation 'com.google.android.play:core:1.7.3'
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+}

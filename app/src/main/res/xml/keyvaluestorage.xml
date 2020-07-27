@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <CheckBoxPreference
+        android:key="term_accepted"
+        android:summary="Is term accepted or not"
+        android:title="term acception status"
+        android:defaultValue="false"
+    />
+    
+    <CheckBoxPreference
+        android:key="general_info"
+        android:summary="Is general information submitted or not"
+        android:title="General information submission status"
+        android:defaultValue="false"
+    />
+    
+    <CheckBoxPreference
+        android:key="health_daily_submission"
+        android:summary="Is daily health status data submitted or not"
+        android:title="daily health submission status"
+        android:defaultValue="false"
+    />
+    
+    <CheckBoxPreference
+        android:key="1st_run"
+        android:summary="Is this the 1st time running or not"
+        android:title="1st time running status"
+        android:defaultValue="true"
+    />
+    
+    <!-- general infomation key-value pairs -->
+    
+    <EditTextPreference
+        android:key="phonelab"
+        android:summary="Is this phone a phonelab device or not"
+        android:title="phonelab phone status"
+        android:defaultValue="nophlab"
+    />
+    
+    <EditTextPreference
+    	android:key="bt_mac"
+    	android:summary="bluetooth mac address"
+    	android:title="bluetooth mac address"
+    	android:defaultValue="null"    
+    />
+    
+    <EditTextPreference
+    	android:key="uniqueID"
+    />
+    
+    <EditTextPreference
+    	android:key="@string/surveystr_age"
+    	android:summary="age of the participants"
+    	android:title="age of the participants"
+    	android:defaultValue="18~25"    
+    />
+    
+    <EditTextPreference
+    	android:key="@string/surveystr_gender"
+    	android:summary="gender of the participants"
+    	android:title="gender of the participants"
+    	android:defaultValue="Male"    
+    />
+    
+    <EditTextPreference
+    	android:key="@string/surveystr_occupation"
+    	android:summary="occupation of the participants"
+    	android:title="occupation of the participants"
+    	android:defaultValue="Under"    
+    />
+    
+    <EditTextPreference
+    	android:key="@string/surveystr_encounter"
+    	android:summary="expected daily encounters"
+    	android:title="expected daily encounters"
+    	android:defaultValue="0~5"    
+    />
+    
+    <CheckBoxPreference
+        android:key="isGeneralInfoUploaded"
+        android:summary="Is general information uploaded or not"
+        android:title="general information upload"
+        android:defaultValue="false"
+    />
+    
+    <!-- other -->
+   
+    <EditTextPreference
+    	android:key="lastUploadReceiverTime"
+    />
+
+</PreferenceScreen>

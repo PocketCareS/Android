@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:title="USER INFORMATION" >
+    
+    <PreferenceCategory 
+        android:title="PERSONAL BASICS">
+        
+	    <ListPreference
+	        android:key="Gender"
+	        android:title="Choose gender"
+	        android:entries="@array/gen_op_gender"
+	        android:entryValues="@array/gen_op_gender"
+	        android:defaultValue=""
+	    />
+	    
+	    <ListPreference
+	        android:key="Age"
+	        android:title="Choose age group"
+	        android:entries="@array/gen_op_age"
+	        android:entryValues="@array/gen_op_age"
+	        android:defaultValue=""
+	    />
+	    
+	    <ListPreference
+	        android:key="PrimePhone"
+	        android:title="Is this your primary phone"
+	        android:entries="@array/gen_op_ub"
+	        android:entryValues="@array/gen_op_ub"
+	        android:defaultValue=""
+	    />
+	    
+	    <ListPreference
+	        android:key="OwnVehicle"
+	        android:title="Do you have a vehicle"
+	        android:entries="@array/gen_op_ub"
+	        android:entryValues="@array/gen_op_ub"
+	        android:defaultValue=""
+	    />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="OCCUPATION AND CONTACT"
+        android:key="ocpcta_cat">
+    
+	    <ListPreference
+	        android:key="UB"
+	        android:title="Affiliated with UB"
+	        android:entries="@array/gen_op_ub"
+	        android:entryValues="@array/gen_op_ub"
+	        android:defaultValue=""
+	    />
+	    
+	    <ListPreference
+	        android:key="Occupation"
+	        android:title="UB member type"
+	        android:entries="@array/gen_op_occupation"
+	        android:entryValues="@array/gen_op_occupation"
+	        android:defaultValue=""
+	    />
+	    
+	    <Preference
+	        android:key="Course"
+	        android:title="Number of courses taken"
+	        android:defaultValue=""
+	    />
+	    
+	    <Preference
+	        android:key="Rmate"
+	        android:title="Number of roommates"
+	        android:defaultValue=""
+	    />
+	    
+	    <Preference
+	        android:key="Hout"
+	        android:title="Number of people you hang out"
+	        android:defaultValue=""
+	    />
+    </PreferenceCategory>
+    
+    
+</PreferenceScreen>

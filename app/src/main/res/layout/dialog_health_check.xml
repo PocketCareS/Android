@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp" >
+
+    <CheckBox
+        android:id="@+id/dialog_health_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical" />
+
+</LinearLayout>
