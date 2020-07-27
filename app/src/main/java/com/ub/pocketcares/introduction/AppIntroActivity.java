@@ -13,6 +13,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -21,8 +23,6 @@ import com.github.appintro.AppIntro2;
 import com.github.appintro.AppIntroFragment;
 import com.github.appintro.model.SliderPage;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -109,7 +109,7 @@ public class AppIntroActivity extends AppIntro2 {
     }
 
     @Override
-    protected void onUserDeniedPermission(@NotNull String permissionName) {
+    protected void onUserDeniedPermission(@NonNull String permissionName) {
 //        User pressed "Deny" on the permission dialog
         super.onUserDeniedPermission(permissionName);
         if (Manifest.permission.ACCESS_BACKGROUND_LOCATION.equals(permissionName)) {
@@ -120,7 +120,7 @@ public class AppIntroActivity extends AppIntro2 {
     }
 
     @Override
-    protected void onUserDisabledPermission(@NotNull String permissionName) {
+    protected void onUserDisabledPermission(@NonNull String permissionName) {
 //      User pressed "Deny" + "Don't ask again" on the permission dialog
         super.onUserDisabledPermission(permissionName);
         if (alertMessage == null) {

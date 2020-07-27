@@ -36,7 +36,7 @@ public class HTTPHelper {
     public String postRequest(String url, String json, String token) throws IOException {
         Log.v("HTTP_check", "URL: " + url);
         Log.v("HTTP_check", "Body: " + json);
-        RequestBody body = RequestBody.create(json, JSON);
+        RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .addHeader("token", token)
                 .url(url)

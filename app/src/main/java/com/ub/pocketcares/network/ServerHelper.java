@@ -40,7 +40,7 @@ public class ServerHelper {
         return (String) serverResponse.get("token");
     }
 
-    private static String getDeviceId(Context context) {
+    public static String getDeviceId(Context context) {
         SharedPreferences firebaseTokenPref = context.getSharedPreferences("FirebasePreference", MODE_PRIVATE);
         return firebaseTokenPref.getString("InstanceID", null);
     }
