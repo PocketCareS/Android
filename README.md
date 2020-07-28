@@ -1,6 +1,6 @@
 # PocketCareS-Android
 
-![logo](logo.png)
+<img src="logo.png" width="300">
 
 Call for code submission for COVID-19 track. 
 Description will come here. 
