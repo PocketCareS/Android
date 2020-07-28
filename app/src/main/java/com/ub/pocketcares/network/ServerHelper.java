@@ -2,12 +2,18 @@ package com.ub.pocketcares.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
-import android.util.Pair;
+import android.util.Log;
 
+import androidx.work.Constraints;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.ub.pocketcares.bluetoothBeacon.CloseContactDailyData;
-import com.ub.pocketcares.bluetoothBeacon.CloseContactHourlyData;
 import com.ub.pocketcares.bluetoothBeacon.ContactAnalyticsResponse;
 import com.ub.pocketcares.utility.Utility;
 
@@ -15,22 +21,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TreeMap;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class ServerHelper {
-    private final static String productionHost = "https://pcpprd-app.acsu.buffalo.edu";
-    public final static String USER_ENDPOINT = productionHost + "/user";
-    public final static String USER_INFO = productionHost + "/user/info";
-    public final static String LOCATION_ENDPOINT = productionHost + "/upload/location";
-    public final static String CONTACT_ENDPOINT = productionHost + "/upload/contactlist";
-    public final static String SYMPTOMS_ENDPOINT = productionHost + "/user/symptoms";
-    public final static String ANALYTICS_ENDPOINT = productionHost + "/analytics/contactData?startDate=%d&endDate=%d&contactType=close";
+    private final static String serverHost = "https://pocketcares-server-app-pocketcares.mycluster-dal10-b-746843-c6bcb6f7fc0a61609dee42a1778bf377-0000.us-south.containers.appdomain.cloud";
+    public final static String USER_ENDPOINT = serverHost + "/user";
+    public final static String CONTACT_ENDPOINT = serverHost + "/upload/contactlist";
+    public final static String SYMPTOMS_ENDPOINT = serverHost + "/user/symptoms";
+    public final static String ANALYTICS_ENDPOINT = serverHost + "/analytics/contactData?startDate=%d&endDate=%d&contactType=close";
 
     public static String generateToken(Context context, HTTPHelper helper) throws JSONException, IOException {
         JSONObject bluetoothName = new JSONObject();
@@ -42,8 +43,26 @@ public class ServerHelper {
 
     public static String getDeviceId(Context context) {
         SharedPreferences firebaseTokenPref = context.getSharedPreferences("FirebasePreference", MODE_PRIVATE);
-        return firebaseTokenPref.getString("InstanceID", null);
+        String token = firebaseTokenPref.getString("InstanceID", null);
+        if (token == null) {
+            generateFirebaseId(context);
+        }
+        return token;
     }
+
+    public static void generateFirebaseId(Context context) {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest firebaseIdGeneration = new OneTimeWorkRequest.Builder(FirebaseIdWorker.class)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(context)
+                .enqueueUniqueWork("firebaseIdWork", ExistingWorkPolicy.KEEP, firebaseIdGeneration);
+    }
+
 
     private static TreeMap<Long, CloseContactDailyData> dailyAnalyticsHelper(long startDate, long endDate, Context context) throws IOException, JSONException {
         try {
@@ -54,7 +73,7 @@ public class ServerHelper {
             Gson gson = new Gson();
             ContactAnalyticsResponse contactAnalyticsResponse = gson.fromJson(responseJson, ContactAnalyticsResponse.class);
             return contactAnalyticsResponse.getContactCount();
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             ContactAnalyticsResponse emptyResponse = new ContactAnalyticsResponse();
             return emptyResponse.getContactCount();
         }

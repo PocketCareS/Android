@@ -106,9 +106,6 @@
             android:name=".bluetoothBeacon.PostalCodeService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".network.FirebaseService"
-            android:exported="false" />
 
         <activity
             android:name="com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationHandler"

@@ -63,12 +63,6 @@ public class UploadWorker extends Worker {
         return workResult[0];
     }
 
-    private void uploadLocation(HTTPHelper helper, String data, String token) throws IOException {
-        if (data != null) {
-            helper.postRequest(ServerHelper.LOCATION_ENDPOINT, data, token);
-        }
-    }
-
     private void uploadContact(HTTPHelper helper, String data, String token) throws IOException {
         if (data != null) {
             helper.postRequest(ServerHelper.CONTACT_ENDPOINT, data, token);

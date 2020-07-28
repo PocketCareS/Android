@@ -153,7 +153,7 @@ public class MonitoringApplication extends Application implements BootstrapNotif
         boolean isOnCampus = preferences.getBoolean(SHARED_PREF_NAME_IS_ON_CAMPUS, false);
         boolean isDownTimeActive = preferences.getBoolean("downtime_active", false);
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-        String notificationText = "";
+        String notificationText = "No bluetooth adapter found.";
         boolean canRun = false;
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter.isEnabled()) {

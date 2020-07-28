@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -39,12 +38,11 @@ import com.ub.pocketcares.utility.LogTags;
 import com.ub.pocketcares.utility.PreferenceTags;
 import com.ub.pocketcares.utility.Utility;
 
+import static com.ub.pocketcares.network.ServerHelper.generateFirebaseId;
+
 public class SplashActivity extends AppCompatActivity {
 
-    public static final String TAG = "SplashActivity";
     public Boolean isFirstTime = false;
-    public Boolean isFirstTimeBluetoothName = false;
-    public Boolean isFirstTimeUserProfile = false;
     public static final int HEALTH_REMINDER_HOUR = 20;
     public static final int DAILY_HEALTH_RESET = 0;
 
@@ -55,13 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (!FirstTimeChecker.getBooleanPreferenceValue(this, "isFirstTimeExecution")) {
-            Log.d(TAG, "First time Execution");
-            isFirstTime = true;
-        } else {
-            isFirstTime = false;
-        }
-        isFirstTimeBluetoothName = !FirstTimeChecker.getBooleanPreferenceValue(this, "isFirstTimeExecutionBluetoothDevice");
+        isFirstTime = !FirstTimeChecker.getBooleanPreferenceValue(this, "isFirstTimeExecution");
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
@@ -75,22 +67,12 @@ public class SplashActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    private void addCalibrationValues() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("calibrate_android_x", Utility.DEFAULT_CALIBRATION_ANDROID_X);
-        editor.putInt("calibrate_android_y", Utility.DEFAULT_CALIBRATION_ANDROID_Y);
-        editor.putInt("calibrate_iOS_x", Utility.DEFAULT_CALIBRATION_IOS_X);
-        editor.putInt("calibrate_iOS_y", Utility.DEFAULT_CALIBRATION_IOS_Y);
-        editor.apply();
-    }
-
     public void checkFirstTime(Boolean isFirstTime) {
         setDailyHealthAlarm(getApplicationContext(), Utility.getCalenderForHour(DAILY_HEALTH_RESET), MainActivity.ALARMID_DAILY12OCLOCK, 1);
         setHealthReminderAlarm(getApplicationContext());
         setDownTimeAlarm(getApplicationContext());
         if (isFirstTime) {
-            addCalibrationValues();
+            generateFirebaseId(this);
             SharedPreferences sharedPreferences = getSharedPreferences("databaseDate", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Date currentDate = Calendar.getInstance().getTime();
@@ -191,7 +173,6 @@ public class SplashActivity extends AppCompatActivity {
 
         WorkManager.getInstance(context)
                 .enqueue(uploadRequest);
-        Log.v("Worker_Test", "Work Set!");
     }
 
 }

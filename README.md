@@ -1,4 +1,4 @@
-# PocketCareS-Android
+# PocketCare S - Android
 
 <img src="logo.png" width="300">
 
@@ -54,6 +54,15 @@ Once the application starts, follow the on-boarding process and read how P works
 
 ## How does PocketCare S Work?
 
+You can read more about how the server works here.
+
+1. PocketCare S uses Bluetooth LE technology to scan and send packets called beacons. 
+2. PocketCare S uses the iBeacon layout for the beacon format in order to work with the iOS version.
+3. As soon as PocketCare S starts with the required permissions, it starts scanning for iBeacons in a regular interval (every minute) and transmitting iBeacons continuously.
+4. When PocketCare S detects a beacon nearby, it starts a session.    
+
+
+For a more detailed description, refer to [further reading](#further-reading) section. 
 
 
 ## The Architecture
