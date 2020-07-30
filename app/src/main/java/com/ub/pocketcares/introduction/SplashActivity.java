@@ -108,8 +108,14 @@ public class SplashActivity extends AppCompatActivity {
 
     public static void setHealthReminderAlarm(Context context) {
         SharedPreferences preferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context);
-        int minutesAfterMidnight = preferences.getInt("health_reminder_time", HEALTH_REMINDER_HOUR);
-        setDailyHealthAlarm(context, Utility.getHealthReminderCalendar(minutesAfterMidnight), MainActivity.ALARMID_DAILYHEALTH, 2);
+        int minutesAfterMidnight = preferences.getInt("health_reminder_time", -1);
+        Calendar reminderCalendar;
+        if (minutesAfterMidnight == -1) {
+            reminderCalendar = Utility.getCalenderForHour(HEALTH_REMINDER_HOUR);
+        } else {
+            reminderCalendar = Utility.getHealthReminderCalendar(minutesAfterMidnight);
+        }
+        setDailyHealthAlarm(context, reminderCalendar, MainActivity.ALARMID_DAILYHEALTH, 2);
     }
 
     public static void setDailyHealthAlarm(Context context, Calendar calendar, int extra, int code) {
