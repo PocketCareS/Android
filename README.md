@@ -94,7 +94,7 @@ In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy o
 
 ## Project Road Map 
 
-![Road Map](PocketCare_S_Road_Map.png)
+![Road Map](assets/PocketCare_S_Road_Map.png)
 
 ## Additional Information 
 
