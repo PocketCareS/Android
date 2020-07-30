@@ -2,17 +2,21 @@
 
 <img src="logo.png" width="300">
 
-Call for code submission for COVID-19 track. 
-Description will come here. 
+**Call for code submission for COVID-19 track.**
+
+PocketCare S is a comprehensive smartphone-based solution for monitoring close encounters. It is a bluetooth low energy (BLE) based solution which enables smartphones to send and receive anonymous beacon signals. It checks the distance between a smartphone and another beacon (or smartphone running PocketCare S) to see if they are close to each other (less than 2m). If so, the smartphone records the duration of such a close encounter with another beacon. 
+
+PocketCare S is designed to report social distance information without collecting or revealing any personally identifiable information about any specific individual.
+
 
 ## Contents 
 1. [Demo Video](#demo-video) 
-2. [Getting Started](#getting-started)
-3. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
-4. [The Architecture](#the-architecture) 
+2. [The Architecture](#the-architecture)
+3. [Getting Started](#getting-started)
+4. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
 5. [Built With](#built-with)
 6. [Project RoadMap](#project-roadmap)
-7. [Further Reading](#further-reading)
+7. [Further Readings](#further-readings)
 8. [License](#license)
 9. [Acknowledgments](#acknowledgements)
 
@@ -20,6 +24,10 @@ Description will come here.
 
 [![Demo](http://img.youtube.com/vi/JnOWwagUgxQ/0.jpg)](http://www.youtube.com/watch?v=JnOWwagUgxQ "PocketCare S Demo")
  
+ 
+## The Architecture
+
+![Architecture](PocketCareS_Design_Simplified.png)
 
 ## Getting Started 
 
@@ -30,10 +38,10 @@ Description will come here.
 Before you begin, make sure you satisfy the following requirements:
 
 1. You are running this on a physical android device.
-2. The device should at least be running on [android sdk version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L)
-3. The device should have Bluetooth LE support. More details about this requirement can be found here. 
+2. The device should at least be running on [android sdk version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
+3. The device should have Bluetooth LE support. More details about this requirement can be found [here](#how-does-pocketcare-s-work). 
 
-As long as you run this on any modern android device it should work, you can check the Bluetooth LE compatibility of your device [here](https://altbeacon.github.io/android-beacon-library/beacon-transmitter-devices.html). 
+As long as you run this on any modern android device, the application should work properly. You can check the Bluetooth LE compatibility of your device [here](https://altbeacon.github.io/android-beacon-library/beacon-transmitter-devices.html). 
 
 
 ### Running PocketCare S using Android Studio
@@ -41,8 +49,11 @@ As long as you run this on any modern android device it should work, you can che
 1. Open the project in Android Studio.
 2. Wait for Gradle build to finish.
 3. Connect your android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
-4. The application is already configured with the IBM server URLs. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable with your own link. 
-5. Android Studio should automatically detect the configurations, after the gradle build is finished click on the play button on top to run PocketCare S. 
+4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable in [ServerHelper](app/build/intermediates/javac/debug/classes/com/ub/pocketcares/network/ServerHelper.class) java file with your URL. 
+```java
+    private final static String serverHost = "YOUR_SERVER_URL";
+```
+5. Android Studio should automatically detect the configurations, after the gradle build is finished click on the play button on top to run PocketCare S. If the gradle build does not succeed follow [this document](https://developer.android.com/studio/known-issues) to troubleshoot any errors. 
 
 ### Running PocketCare S using an APK 
 
@@ -54,25 +65,43 @@ Once the application starts, follow the on-boarding process and read how P works
 
 ## How does PocketCare S Work?
 
-You can read more about how the server works here.
+### Key Highlights (Mobile Application)
 
-1. PocketCare S uses Bluetooth LE technology to scan and send packets called beacons. 
-2. PocketCare S uses the iBeacon layout for the beacon format in order to work with the iOS version.
-3. As soon as PocketCare S starts with the required permissions, it starts scanning for iBeacons in a regular interval (every minute) and transmitting iBeacons continuously.
-4. When PocketCare S detects a beacon nearby, it starts a session.    
+1. Close encounter data will be displayed in the mobile application after a close encounter session starts. A close encounter session starts when two people are within **2 meters** for at least **5 minutes**. 
+2. The **virtual bluetooth name** changes every hour to ensure **user privacy**. 
+3. Data upload to the server takes place every hour.
+4. Data is stored in user's phone for a maximum of 14 days. 
 
+### Detailed Architecture 
 
-For a more detailed description, refer to [further reading](#further-reading) section. 
+![Working](PocketCareS_Design_Technical.png)
 
+### Technological Advances
 
-## The Architecture
+![Tech](PocketCareS-TechAdvances.png)
+
+### Security and Privacy 
+
+![Security](PocketCareS-Privacy.png)
+
+For a more detailed description, refer to [further reading](#further-readings) section. 
+
 
 ## Built With 
 
+In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy our server (using **OpenJDK 8**), database (using **MongoDB**), the web portal (using **Node Js server**) and **IBM Push notification service** from **IBM Bluemix** in the android application of PocketCare S as a proof of concept. In the future, we will consider integrating other IBM services into the PocketCare S solution.
+
 ## Project RoadMap 
 
-## Further Reading
+## Further Readings
+
+You can find more information about PocketCare S here:
+
+1. [Website](https://engineering.buffalo.edu/computer-science-engineering/pocketcares.html) 
+2. [White Paper](https://docs.google.com/document/d/e/2PACX-1vT6UqA3HByzG5Di576gmz-JWzgKOFx5KLYGgJMpxcmWkOXYJ_vUFz2h1w2LnDNWI4y-xnyKhPi_s70p/pub)
 
 ## License 
+
+This project is licensed under the Apache 2 License - see the LICENSE file for details
 
 ## Acknowledgements
