@@ -15,8 +15,8 @@ PocketCare S is designed to report social distance information without collectin
 3. [Getting Started](#getting-started)
 4. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
 5. [Built With](#built-with)
-6. [Project RoadMap](#project-roadmap)
-7. [Further Readings](#further-readings)
+6. [Project Road Map](#project-road-map)
+7. [Additional Information](#additional-information)
 8. [License](#license)
 9. [Acknowledgments](#acknowledgements)
 
@@ -61,7 +61,7 @@ As long as you run this on any modern android device, the application should wor
 2. Download the APK from here. 
 3. After the APK is downloaded, tap to install it and run PocketCare S.
 
-Once the application starts, follow the on-boarding process and read how P works below. 
+Once the application starts, follow the on-boarding process and read how PocketCare S works below. 
 
 ## How does PocketCare S Work?
 
@@ -84,24 +84,25 @@ Once the application starts, follow the on-boarding process and read how P works
 
 ![Security](PocketCareS-Privacy.png)
 
-For a more detailed description, refer to [further reading](#further-readings) section. 
+For a more detailed description, refer to the [additional information](#additional-information) section. 
 
 
 ## Built With 
 
 In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy our server (using **OpenJDK 8**), database (using **MongoDB**), the web portal (using **Node Js server**) and **IBM Push notification service** from **IBM Bluemix** in the android application of PocketCare S as a proof of concept. In the future, we will consider integrating other IBM services into the PocketCare S solution.
 
-## Project RoadMap 
+## Project Road Map 
 
-## Further Readings
+![Road Map](PocketCare_S_Road_Map.png)
 
-You can find more information about PocketCare S here:
+## Additional Information 
 
-1. [Website](https://engineering.buffalo.edu/computer-science-engineering/pocketcares.html) 
-2. [White Paper](https://docs.google.com/document/d/e/2PACX-1vT6UqA3HByzG5Di576gmz-JWzgKOFx5KLYGgJMpxcmWkOXYJ_vUFz2h1w2LnDNWI4y-xnyKhPi_s70p/pub)
+You can read mre about PocketCare S on our [website](https://engineering.buffalo.edu/computer-science-engineering/pocketcares.html). We also have a [White Paper](https://docs.google.com/document/d/e/2PACX-1vT6UqA3HByzG5Di576gmz-JWzgKOFx5KLYGgJMpxcmWkOXYJ_vUFz2h1w2LnDNWI4y-xnyKhPi_s70p/pub) which can be accessed here.  
+
+PocketCare S is also available on [Google Play](https://play.google.com/store/apps/details?id=com.ub.pocketcares) and to the University at Buffalo (UB) community using the [Apple developer Enterprise Program](https://engineering.buffalo.edu/computer-science-engineering/pocketcares/pocketcares-ios.html).
 
 ## License 
 
-This project is licensed under the Apache 2 License - see the LICENSE file for details
+This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
