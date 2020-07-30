@@ -1,6 +1,6 @@
 # PocketCare S - Android
 
-<img src="logo.png" width="300">
+<img src="/assets/logo.png" width="300">
 
 **Call for code submission for COVID-19 track.**
 
@@ -27,7 +27,7 @@ PocketCare S is designed to report social distance information without collectin
  
 ## The Architecture
 
-![Architecture](PocketCareS_Design_Simplified.png)
+![Architecture](assets/PocketCareS_Design_Simplified.png)
 
 ## Getting Started 
 
@@ -74,17 +74,18 @@ Once the application starts, follow the on-boarding process and read how PocketC
 
 ### Detailed Architecture 
 
-![Working](PocketCareS_Design_Technical.png)
+![Working](assets/PocketCareS_Design_Technical.png)
 
 ### Technological Advances
 
-![Tech](PocketCareS-TechAdvances.png)
+PocketCare S has made significant technological advances compared to other solutions. An Infographic with this information can be found [here](https://engineering.buffalo.edu/content/dam/engineering/computer-science-engineering/images/pocketcare/PocketCareS-TechAdvances.pdf).
 
 ### Security and Privacy 
 
-![Security](PocketCareS-Privacy.png)
+PocketCare S cares values the security and privacy of its users. The app does not collect any private information about an individual person.  All the data collected is anonymous and will not reveal any personally identifiable information. An Infographic with this information can be found [here](https://engineering.buffalo.edu/content/dam/engineering/computer-science-engineering/images/pocketcare/PocketCareS.pdf).
 
-For a more detailed description, refer to the [additional information](#additional-information) section. 
+
+**For a more detailed description, refer to the [additional information](#additional-information) section.**
 
 
 ## Built With 
