@@ -74,7 +74,14 @@ public class UploadWorker extends Worker {
                 networkPrefEdit.apply();
             }
         };
-        new Thread(dataUpload).start();
+        Thread uploadThread = new Thread(dataUpload);
+        uploadThread.start();
+        try {
+            uploadThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            workResult[0] = Result.retry();
+        }
         wakeLock.release();
         return workResult[0];
     }

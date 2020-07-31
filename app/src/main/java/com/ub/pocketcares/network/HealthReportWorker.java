@@ -55,7 +55,14 @@ public class HealthReportWorker extends Worker {
                 ddh.closeDB();
             }
         };
-        new Thread(dataUpload).start();
+        Thread networkThread = new Thread(dataUpload);
+        networkThread.start();
+        try {
+            networkThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            workResult[0] = Result.retry();
+        }
         return workResult[0];
     }
 

@@ -31,6 +31,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -184,17 +185,18 @@ public class SplashActivity extends AppCompatActivity {
 
     public static void setUploadWork(Context context) {
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
-
         PeriodicWorkRequest uploadRequest =
                 new PeriodicWorkRequest.Builder(UploadWorker.class, 1, TimeUnit.HOURS)
                         .setConstraints(constraints)
-                        .setInitialDelay(Utility.getMinutesToNextHour(Calendar.getInstance()), TimeUnit.MINUTES)
+                        .setInitialDelay(1, TimeUnit.MINUTES)
                         .build();
 
         WorkManager.getInstance(context)
-                .enqueue(uploadRequest);
+                .enqueueUniquePeriodicWork("serverUploadWork", ExistingPeriodicWorkPolicy.KEEP, uploadRequest);
+
+        Log.v("Worker_Test", "Upload Worker created.");
     }
 
 }
