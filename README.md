@@ -60,8 +60,8 @@ As long as you run this on any modern Android device, the application should wor
 
 ### Running PocketCare S using an APK 
 
-1. On your Android device, make sure you have enabled. You can follow this [article](https://www.androidcentral.com/unknown-sources) to enable it. 
-2. Download the APK from here. 
+1. On your Android device, make sure you have *install from unknown sources* enabled. You can follow this [article](https://www.androidcentral.com/unknown-sources) to enable it. 
+2. Download the APK from [here](https://github.com/PocketCareS/PocketCareS-Android/releases/download/1.1.3/PocketCareS_CFC.apk). 
 3. After the APK is downloaded, tap to install it and run PocketCare S.
 
 Once the application starts, follow the on-boarding process and read how PocketCare S works below. 
