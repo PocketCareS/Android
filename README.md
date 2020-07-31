@@ -16,15 +16,16 @@ PocketCare S is designed to report social distance information without collectin
 2. [The Architecture](#the-architecture)
 3. [Getting Started](#getting-started)
 4. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
+5. [Push Notification for Exposure]()
 6. [Built With](#built-with)
 7. [Project Road Map](#project-road-map)
 8. [Additional Information](#additional-information)
 9. [License](#license)
-10. [Acknowledgments](#acknowledgements)
+10. [Acknowledgments](#acknowledgements)    
 
 ## Demo Video 
 
-[![Demo](http://img.youtube.com/vi/JnOWwagUgxQ/0.jpg)](http://www.youtube.com/watch?v=JnOWwagUgxQ "PocketCare S Demo")
+[![Demo](assets/VideoThumbnail.png)](https://youtu.be/JUTQIcdgXwc "PocketCare S Demo")
  
  
 ## The Architecture
@@ -51,7 +52,7 @@ As long as you run this on any modern Android device, the application should wor
 1. Open the project in Android Studio.
 2. Wait for Gradle build to finish.
 3. Connect your Android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
-4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable in [ServerHelper](app/build/intermediates/javac/debug/classes/com/ub/pocketcares/network/ServerHelper.class) java file with your URL. 
+4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable in [ServerHelper](app/src/main/java/com/ub/pocketcares/network/ServerHelper.java) java file with your URL. 
 ```java
     private final static String serverHost = "YOUR_SERVER_URL";
 ```
@@ -67,12 +68,17 @@ Once the application starts, follow the on-boarding process and read how PocketC
 
 ## How does PocketCare S Work?
 
+Throughout this section, you can learn how PocketCare S works and the factors that differentiates it from other solutions hoping to solve similar problems. 
+
 ### Key Highlights (Mobile Application)
 
-1. Close encounter data will be displayed in the mobile application after a close encounter session starts. A close encounter session starts when two people are within **2 meters** for at least **5 minutes**. 
-2. The **virtual bluetooth name** changes **every hour** to ensure **user privacy**. 
-3. Data upload to the server takes place **every hour**.
-4. Data is stored in user's phone for a **maximum of 14 days**. 
+1. PocketCare S uses **Bluetooth Low Energy (BLE)** to discover and compute the duration **close encounters**. 
+2. A **close encounter** session starts when two people are within **2 meters** for at least **5 minutes**. 
+3. **Close encounter** data will be displayed in the mobile application after a close encounter session starts. 
+4. Users are **notified immediately** if a close encounter session exceeds **10 minutes**.
+5. The **virtual bluetooth name** changes **every hour** to ensure **user privacy**. 
+6. Data stored in the mobile application is **anonymized** (contains no Personally Identifiable Information) and consists of **daily health report** and **close encounters** for a **maximum period of 14 days.**
+7. Data upload to the server takes place **every hour**.
 
 ### Detailed Architecture 
 
@@ -86,9 +92,17 @@ PocketCare S has made significant technological advances compared to other solut
 
 PocketCare S cares values the security and privacy of its users. The app does not collect any private information about an individual person.  All the data collected is anonymous and will not reveal any personally identifiable information. An Infographic with this information can be found [here](https://engineering.buffalo.edu/content/dam/engineering/computer-science-engineering/images/pocketcare/PocketCareS.pdf).
 
-### Getting App Client ID for Exposure Notification
+**For a more detailed description, refer to the [additional information](#additional-information) section.**
 
-PocketCare S Android application can get exposure notification from the web portal. You can learn more about the process [here](). This is still an experimental feature and a work in progress this is why you would need to get the App Client ID from the Android application itself to notify the user. You can do this by following the given directions:
+## Push Notifications for Exposure 
+
+PocketCare S plans to implement automatic contact tracing by collaborating with healthcare organizations in the future. In the current Android application, we have added an experimental feature to show how these notifications would work in the future. 
+
+PocketCare S Android application can get push notification for COVID-19 exposure from the web portal. You can learn more about the process [here](). This is still a work in progress and hence you will need to get the unique App Client ID of the infected person from the Android application itself to notify the users who have been in contact with the infected person. You can get the App Client ID following the guide below. 
+
+### Getting App Client ID 
+
+Follow these directions for **Android Studio** or **ADB** to get the App Client ID. 
 
 #### Using Android Studio
 
@@ -105,12 +119,18 @@ PocketCare S Android application can get exposure notification from the web port
 4. Now to get the value of App Client ID from the logcat type ***adb logcat -s App_Client_ID***.
 5. Copy this value of App Client ID and proceed with the exposure notification [documentation](). 
 
-**For a more detailed description, refer to the [additional information](#additional-information) section.**
 
+## Built With
 
-## Built With 
-
-In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy our server (using **OpenJDK 8**), database (using **MongoDB**), the web portal (using **Node JS Server**) and **IBM Push Notification Service** from **IBM Cloud** in the Android application of PocketCare S as a proof of concept. In the future, we will be integrating other IBM services into the PocketCare S solution.
+- [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/) - Used for close contact detection in Android
+- [IBM Push Notifications](https://www.ibm.com/cloud/push-notifications) - Push Notification for Exposure 
+- [High Charts](https://www.highcharts.com/) - Used to visualize data
+- [Red Hat OpenShift on IBM Cloud](https://www.ibm.com/cloud/openshift)
+  - Server using [OpenJDK 8](https://www.ibm.com/cloud/support-for-runtimes)
+  - Database using [MongoDB](https://www.ibm.com/cloud/databases-for-mongodb)
+  - Web Portal hosted using [Node JS Server](https://developer.ibm.com/node/cloud/)
+- [React](https://reactjs.org/) - Used to build the web portal 
+- [Spring Boot](https://spring.io/projects/spring-boot) - Framework for the Server
 
 ## Project Road Map 
 
@@ -118,7 +138,9 @@ In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy o
 
 ## Additional Information 
 
-You can read more about PocketCare S on our [website](https://engineering.buffalo.edu/computer-science-engineering/pocketcares.html). We also have a [White Paper](https://docs.google.com/document/d/e/2PACX-1vT6UqA3HByzG5Di576gmz-JWzgKOFx5KLYGgJMpxcmWkOXYJ_vUFz2h1w2LnDNWI4y-xnyKhPi_s70p/pub) which can be accessed here.  
+You can read more about PocketCare S on our [website](https://engineering.buffalo.edu/computer-science-engineering/pocketcares.html). We also have a [White Paper](https://docs.google.com/document/d/e/2PACX-1vT6UqA3HByzG5Di576gmz-JWzgKOFx5KLYGgJMpxcmWkOXYJ_vUFz2h1w2LnDNWI4y-xnyKhPi_s70p/pub) which can be accessed here. 
+
+An in-depth video on the PocketCare S mobile application can be found [here](https://youtu.be/qvDil5-OTio).
 
 PocketCare S is also available on [Google Play](https://play.google.com/store/apps/details?id=com.ub.pocketcares) and to the University at Buffalo (UB) community using the [Apple Developer Enterprise Program](https://engineering.buffalo.edu/computer-science-engineering/pocketcares/pocketcares-ios.html).
 
@@ -130,6 +152,6 @@ This project is licensed under the Apache 2 License - see the [LICENSE](LICENSE)
 
 Special thanks to all who helped bring the project to fruition:
 
-Sourav Samanta, Rishabh Joshi, Jeetendra Gan, Shanelle Ileto, Aritra Paul, Dr. Peter Winkelstein, Dr. Matthew R. Bonner, Kevin Wang, Chen Yuan, Dheeraj Bhatia, Latheeshwarraj Mohanraj, Dr. Wen Dong, Dr. Tong Guan, Dr. Marina Blanton, Sasha Shapiro, Stephen Fung
+Sourav Samanta, Rishabh Joshi, Jeetendra Gan, Shanelle Ileto, Aritra Paul, Dr. Peter Winkelstein, Dr. Matthew R. Bonner, Kevin Wang, Chen Yuan, Dheeraj Bhatia, Latheeshwarraj Mohanraj, Dr. Wen Dong, Dr. Tong Guan, Dr. Marina Blanton, Sasha Shapiro, Stephen Fung, David G. Young
 
 And our deepest gratitude for the support of **University at Buffalo**.
