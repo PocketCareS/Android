@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.ub.pocketcares.BuildConfig;
 import com.ub.pocketcares.bluetoothBeacon.SessionManager;
+import com.ub.pocketcares.settings.SettingStatic;
 
 import org.altbeacon.beacon.Beacon;
 
@@ -327,7 +329,9 @@ public class SessionDatabaseHelper extends SQLiteOpenHelper {
             } else {
                 if (session.isOngoing()) {
                     if (beaconData.isInSession()) {
-                        Toast.makeText(context, "Multiple ongoing sessions for the same beacon!", Toast.LENGTH_SHORT).show();
+                        if (BuildConfig.DEBUG && SettingStatic.TOAST_LOGS) {
+                            Toast.makeText(context, "Multiple ongoing sessions for the same beacon!", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         beaconData.setCurrentSessionValuesFrom(session);
                     }
@@ -413,7 +417,9 @@ public class SessionDatabaseHelper extends SQLiteOpenHelper {
                 } else {
                     if (session.isOngoing()) {
                         if (beaconData.isInSession()) {
-                            Toast.makeText(context, "Multiple ongoing sessions for the same beacon!", Toast.LENGTH_SHORT).show();
+                            if (BuildConfig.DEBUG && SettingStatic.TOAST_LOGS) {
+                                Toast.makeText(context, "Multiple ongoing sessions for the same beacon!", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             beaconData.setCurrentSessionValuesFrom(session);
                         }

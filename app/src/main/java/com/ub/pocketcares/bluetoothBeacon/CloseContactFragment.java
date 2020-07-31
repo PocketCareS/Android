@@ -43,6 +43,7 @@ import com.ub.pocketcares.backend.BluetoothBeaconDatabaseHelper;
 import com.ub.pocketcares.R;
 import com.ub.pocketcares.home.MainActivity;
 import com.ub.pocketcares.network.ServerHelper;
+import com.ub.pocketcares.settings.SettingStatic;
 import com.ub.pocketcares.utility.Utility;
 
 import android.Manifest;
@@ -370,7 +371,9 @@ public class CloseContactFragment extends Fragment {
             }
             if (BuildConfig.DEBUG) {
                 MainActivity.m_mainActivity.runOnUiThread(() -> {
-                            Toast.makeText(MainActivity.m_mainActivity, "Data updated using Server", Toast.LENGTH_SHORT).show();
+                            if (SettingStatic.TOAST_LOGS) {
+                                Toast.makeText(MainActivity.m_mainActivity, "Data updated using Server", Toast.LENGTH_SHORT).show();
+                            }
                         }
                 );
             }

@@ -27,9 +27,7 @@ public class SettingStatic {
     public static final int INT_INTERFACE = 3;
     public static final int INT_REFER = 4;
     public static final int INT_CONTACT = 5;
-    public static boolean APP_IN_DEBUG_MODE = false;
     public static boolean TOAST_LOGS = false;
-    public static boolean CALIBRATION_SWITCH = true;
 
 
     public static final String STR_REFER = "Refer Friends";
