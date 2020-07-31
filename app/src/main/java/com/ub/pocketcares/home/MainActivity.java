@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_LOCATION = 2;
     public static final int LOCATION_PERMISSION_CODE = 101;
     private static final int PERMISSION_RESULT = 3;
-    private static final int UPDATE_CODE = 4;
 
     public static MainActivity m_mainActivity = null;
     public static boolean m_isActive = false;
@@ -107,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String BLUETOOTH_DIALOG = "com.ub.pocketcares.bluetoothDialog";
     private BluetoothAdapter myDevice;
     private BroadcastReceiver bluetoothLocationDialogReceiver;
-    private AppUpdateManager appUpdateManager;
-    private InstallStateUpdatedListener installStateUpdatedListener;
 
     private MFPPush push; // Push client
     private MFPPushNotificationListener notificationListener; // Notification listener to handle a push sent to the phone
@@ -134,14 +131,6 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(() -> Utility.createDialog(m_mainActivity, "Received a Push Notification", message.getAlert()));
         };
         registerDevice();
-        appUpdateManager = AppUpdateManagerFactory.create(this);
-        installStateUpdatedListener = state -> {
-            // Log state or install the update.
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                popupForCompleteUpdate();
-            }
-        };
-
         myDevice = BluetoothAdapter.getDefaultAdapter();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         startCloseEncounterScan();
@@ -283,44 +272,6 @@ public class MainActivity extends AppCompatActivity {
         push.registerDevice(registrationResponseListener);
     }
 
-
-    public void checkAppUpdate() {
-        // Returns an intent object that you use to check for an update.
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
-
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            Log.v("Update", "Update Priority: " + appUpdateInfo.updatePriority());
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                // Request the update.
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                            appUpdateInfo,
-                            // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                            AppUpdateType.FLEXIBLE,
-                            // The current activity making the update request.
-                            this,
-                            // Include a request code to later monitor this update request.
-                            UPDATE_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    Toast.makeText(this, "Update Failed!", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                popupForCompleteUpdate();
-            }
-        });
-    }
-
-    private void popupForCompleteUpdate() {
-        DialogInterface.OnClickListener onClickListener = (dialog, which) -> appUpdateManager.completeUpdate();
-        DialogInterface.OnDismissListener onDismissListener = (dialog) -> appUpdateManager.completeUpdate();
-        Utility.createDialog(m_mainActivity, "Update Downloaded",
-                "PocketCare S has successfully downloaded the update, please select OK to install it.",
-                onClickListener, onDismissListener);
-    }
-
     public void onSummaryClick(View view) {
         NavController navController = Navigation.findNavController(MainActivity.m_mainActivity, R.id.nav_host_fragment);
         if (view.getId() == R.id.encounterSummary) {
@@ -380,7 +331,6 @@ public class MainActivity extends AppCompatActivity {
         if (push != null) {
             push.listen(notificationListener);
         }
-        checkAppUpdate();
         Intent updateUI = new Intent(CloseContactFragment.ACTION_NOTIFY_BEACON_UI_UPDATE);
         sendBroadcast(updateUI);
         m_isActive = true;
@@ -398,9 +348,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (appUpdateManager != null) {
-            appUpdateManager.unregisterListener(installStateUpdatedListener);
-        }
         m_isActive = false;
     }
 
@@ -520,11 +467,6 @@ public class MainActivity extends AppCompatActivity {
                 requestCode == PERMISSION_RESULT) {
             if (resultCode == RESULT_OK) {
                 startCloseEncounterScan();
-            }
-        }
-        if (requestCode == UPDATE_CODE) {
-            if (resultCode == RESULT_OK) {
-                appUpdateManager.registerListener(installStateUpdatedListener);
             }
         }
     }
