@@ -76,7 +76,10 @@ import com.ub.pocketcares.utility.LogTags;
 import com.ub.pocketcares.utility.PreferenceTags;
 import com.ub.pocketcares.utility.Utility;
 
+import org.json.JSONObject;
+
 import static com.ub.pocketcares.home.HomeTabFragment.createReportHealthDialog;
+import static com.ub.pocketcares.utility.PreferenceTags.APP_CLIENT_ID;
 import static com.ub.pocketcares.utility.PreferenceTags.IBM_PUSH_NOTIFICATION;
 
 public class MainActivity extends AppCompatActivity {
@@ -227,8 +230,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String response) {
                 // Split response and convert to JSON object to display User ID confirmation from the backend
+                Log.v(IBM_PUSH_NOTIFICATION, response);
+                String[] resp = response.split("Text: ");
                 try {
-                    Log.v(IBM_PUSH_NOTIFICATION, response);
+                    JSONObject responseJSON = new JSONObject(resp[1]);
+                    Log.i(APP_CLIENT_ID, responseJSON.getString("deviceId"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

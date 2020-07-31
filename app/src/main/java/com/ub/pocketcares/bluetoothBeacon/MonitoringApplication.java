@@ -120,9 +120,6 @@ public class MonitoringApplication extends Application implements BootstrapNotif
         BeaconManager.setRssiFilterImplClass(AverageRSSIFilter.class);
         SessionManager.initializeSessionData(getApplicationContext());
         beaconManager = BeaconManager.getInstanceForApplication(this);
-        if (BuildConfig.DEBUG) {
-            BeaconManager.setDebug(true);
-        }
         beaconManager.getBeaconParsers().clear();
         beaconManager.getBeaconParsers().add(new BeaconParser().
                 setBeaconLayout(iBeacon));

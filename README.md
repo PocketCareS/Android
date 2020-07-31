@@ -16,11 +16,11 @@ PocketCare S is designed to report social distance information without collectin
 2. [The Architecture](#the-architecture)
 3. [Getting Started](#getting-started)
 4. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
-5. [Built With](#built-with)
-6. [Project Road Map](#project-road-map)
-7. [Additional Information](#additional-information)
-8. [License](#license)
-9. [Acknowledgments](#acknowledgements)
+6. [Built With](#built-with)
+7. [Project Road Map](#project-road-map)
+8. [Additional Information](#additional-information)
+9. [License](#license)
+10. [Acknowledgments](#acknowledgements)
 
 ## Demo Video 
 
@@ -33,24 +33,24 @@ PocketCare S is designed to report social distance information without collectin
 
 ## Getting Started 
 
-**Due to emulators not supporting bluetooth, close encounter detection will not work on emulators.**
+**Due to emulators not supporting Bluetooth, close encounter detection will not work on emulators.**
 
 ### Prerequisites
 
 Before you begin, make sure you satisfy the following requirements:
 
-1. You are running this on a physical android device.
-2. The device should at least be running on [android sdk version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
+1. You are running this on a physical Android device.
+2. The device should at least be running on [Android sdk version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
 3. The device should have Bluetooth LE support. More details about this requirement can be found [here](#how-does-pocketcare-s-work). 
 
-As long as you run this on any modern android device, the application should work properly. You can check the Bluetooth LE compatibility of your device [here](https://altbeacon.github.io/android-beacon-library/beacon-transmitter-devices.html). 
+As long as you run this on any modern Android device, the application should work properly. You can check the Bluetooth LE compatibility of your device [here](https://altbeacon.github.io/android-beacon-library/beacon-transmitter-devices.html). 
 
 
 ### Running PocketCare S using Android Studio
 
 1. Open the project in Android Studio.
 2. Wait for Gradle build to finish.
-3. Connect your android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
+3. Connect your Android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
 4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable in [ServerHelper](app/build/intermediates/javac/debug/classes/com/ub/pocketcares/network/ServerHelper.class) java file with your URL. 
 ```java
     private final static String serverHost = "YOUR_SERVER_URL";
@@ -59,7 +59,7 @@ As long as you run this on any modern android device, the application should wor
 
 ### Running PocketCare S using an APK 
 
-1. On your android device, make sure you have enabled. You can follow this [article](https://www.androidcentral.com/unknown-sources) to enable it. 
+1. On your Android device, make sure you have enabled. You can follow this [article](https://www.androidcentral.com/unknown-sources) to enable it. 
 2. Download the APK from here. 
 3. After the APK is downloaded, tap to install it and run PocketCare S.
 
@@ -70,9 +70,9 @@ Once the application starts, follow the on-boarding process and read how PocketC
 ### Key Highlights (Mobile Application)
 
 1. Close encounter data will be displayed in the mobile application after a close encounter session starts. A close encounter session starts when two people are within **2 meters** for at least **5 minutes**. 
-2. The **virtual bluetooth name** changes every hour to ensure **user privacy**. 
-3. Data upload to the server takes place every hour.
-4. Data is stored in user's phone for a maximum of 14 days. 
+2. The **virtual bluetooth name** changes **every hour** to ensure **user privacy**. 
+3. Data upload to the server takes place **every hour**.
+4. Data is stored in user's phone for a **maximum of 14 days**. 
 
 ### Detailed Architecture 
 
@@ -86,13 +86,31 @@ PocketCare S has made significant technological advances compared to other solut
 
 PocketCare S cares values the security and privacy of its users. The app does not collect any private information about an individual person.  All the data collected is anonymous and will not reveal any personally identifiable information. An Infographic with this information can be found [here](https://engineering.buffalo.edu/content/dam/engineering/computer-science-engineering/images/pocketcare/PocketCareS.pdf).
 
+### Getting App Client ID for Exposure Notification
+
+PocketCare S Android application can get exposure notification from the web portal. You can learn more about the process [here](). This is still an experimental feature and a work in progress this is why you would need to get the App Client ID from the Android application itself to notify the user. You can do this by following the given directions:
+
+#### Using Android Studio
+
+1. Open the PocketCare S Android project in Android Studio. 
+2. Connect the android device to your computer with the application run. If it is not running, click on the play button and run the application. 
+3. In the bottom of the screen, click on log cat and in the search box paste *App_Client_ID*. This is the tag used to filter the ADB log and get the logged value of App Client.
+4. Copy this value of App Client ID and proceed with the exposure notification [documentation](). 
+
+#### Using ADB
+
+1. Make sure you have ADB installed in your system. Follow this [guide](https://www.xda-developers.com/install-adb-windows-macos-linux/) to install ADB in your system.
+2. Connect your phone to the computer (make sure USB debugging is turned on and the application is running) and open your favorite terminal. 
+3. Type ***adb devices*** and make sure your phone is in the "List of attached devices".
+4. Now to get the value of App Client ID from the logcat type ***adb logcat -s App_Client_ID***.
+5. Copy this value of App Client ID and proceed with the exposure notification [documentation](). 
 
 **For a more detailed description, refer to the [additional information](#additional-information) section.**
 
 
 ## Built With 
 
-In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy our server (using **OpenJDK 8**), database (using **MongoDB**), the web portal (using **Node JS Server**) and **IBM Push Notification Service** from **IBM Cloud** in the android application of PocketCare S as a proof of concept. In the future, we will consider integrating other IBM services into the PocketCare S solution.
+In this submission, we have used IBM’s Cloud **Red Hat OpenShift** to deploy our server (using **OpenJDK 8**), database (using **MongoDB**), the web portal (using **Node JS Server**) and **IBM Push Notification Service** from **IBM Cloud** in the Android application of PocketCare S as a proof of concept. In the future, we will consider integrating other IBM services into the PocketCare S solution.
 
 ## Project Road Map 
 
@@ -114,4 +132,4 @@ Special thanks to all who helped bring the project to fruition:
 
 Sourav Samanta, Rishabh Joshi, Jeetendra Gan, Shanelle Ileto, Aritra Paul, Dr. Peter Winkelstein, Dr. Matthew R. Bonner, Kevin Wang, Chen Yuan, Dheeraj Bhatia, Latheeshwarraj Mohanraj, Dr. Wen Dong, Dr. Tong Guan, Dr. Marina Blanton, Sasha Shapiro, Stephen Fung
 
-And our deepest gratitude for the support of University at Buffalo.
+And our deepest gratitude for the support of **University at Buffalo**.
