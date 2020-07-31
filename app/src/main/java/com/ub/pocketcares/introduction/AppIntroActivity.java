@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 University at Buffalo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ub.pocketcares.introduction;
 
 import android.Manifest;
@@ -13,6 +29,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -21,8 +39,6 @@ import com.github.appintro.AppIntro2;
 import com.github.appintro.AppIntroFragment;
 import com.github.appintro.model.SliderPage;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -109,7 +125,7 @@ public class AppIntroActivity extends AppIntro2 {
     }
 
     @Override
-    protected void onUserDeniedPermission(@NotNull String permissionName) {
+    protected void onUserDeniedPermission(@NonNull String permissionName) {
 //        User pressed "Deny" on the permission dialog
         super.onUserDeniedPermission(permissionName);
         if (Manifest.permission.ACCESS_BACKGROUND_LOCATION.equals(permissionName)) {
@@ -120,7 +136,7 @@ public class AppIntroActivity extends AppIntro2 {
     }
 
     @Override
-    protected void onUserDisabledPermission(@NotNull String permissionName) {
+    protected void onUserDisabledPermission(@NonNull String permissionName) {
 //      User pressed "Deny" + "Don't ask again" on the permission dialog
         super.onUserDisabledPermission(permissionName);
         if (alertMessage == null) {

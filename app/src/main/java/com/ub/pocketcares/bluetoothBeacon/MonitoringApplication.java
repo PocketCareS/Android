@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 University at Buffalo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ub.pocketcares.bluetoothBeacon;
 
 import android.annotation.SuppressLint;
@@ -104,9 +120,6 @@ public class MonitoringApplication extends Application implements BootstrapNotif
         BeaconManager.setRssiFilterImplClass(AverageRSSIFilter.class);
         SessionManager.initializeSessionData(getApplicationContext());
         beaconManager = BeaconManager.getInstanceForApplication(this);
-        if (BuildConfig.DEBUG) {
-            BeaconManager.setDebug(true);
-        }
         beaconManager.getBeaconParsers().clear();
         beaconManager.getBeaconParsers().add(new BeaconParser().
                 setBeaconLayout(iBeacon));
@@ -153,7 +166,7 @@ public class MonitoringApplication extends Application implements BootstrapNotif
         boolean isOnCampus = preferences.getBoolean(SHARED_PREF_NAME_IS_ON_CAMPUS, false);
         boolean isDownTimeActive = preferences.getBoolean("downtime_active", false);
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-        String notificationText = "";
+        String notificationText = "No bluetooth adapter found.";
         boolean canRun = false;
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter.isEnabled()) {

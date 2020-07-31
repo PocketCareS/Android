@@ -1,9 +1,23 @@
+/*
+ * Copyright 2020 University at Buffalo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ub.pocketcares.home;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
@@ -13,7 +27,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -21,8 +34,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -46,48 +57,43 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.Task;
-import com.ub.pocketcares.backend.DailyStatusDatabaseHelper;
+import com.ibm.mobilefirstplatform.clientsdk.android.core.api.BMSClient;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationListener;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushNotificationOptions;
+import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushResponseListener;
 import com.ub.pocketcares.bluetoothBeacon.CloseContactFragment;
 import com.ub.pocketcares.bluetoothBeacon.MonitoringApplication;
 import com.ub.pocketcares.R;
 import com.ub.pocketcares.bluetoothBeacon.PostalCodeService;
+import com.ub.pocketcares.network.ServerHelper;
 import com.ub.pocketcares.receiver.BootBroadCastReceiver;
 import com.ub.pocketcares.survey.HealthData;
 import com.ub.pocketcares.utility.LogTags;
 import com.ub.pocketcares.utility.PreferenceTags;
 import com.ub.pocketcares.utility.Utility;
 
+import org.json.JSONObject;
+
 import static com.ub.pocketcares.home.HomeTabFragment.createReportHealthDialog;
+import static com.ub.pocketcares.utility.PreferenceTags.APP_CLIENT_ID;
+import static com.ub.pocketcares.utility.PreferenceTags.IBM_PUSH_NOTIFICATION;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NOTI_HEALTHSTATUS = 2;
     public static final int ALARMID_DAILYHEALTH = 0;
     public static final int ALARMID_DAILY12OCLOCK = 2;
-    public static final int ALARMID_PERIODHOUR = 4;
     public static final int ALARMID_OTHER = 99;
     public static final String ACTION_APP_START = "android.intent.action.appstart";
     public static final String INTENTEXTRA = "intentextra";
-    public static final String PHONETYPE_NONE = "NONE";
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int REQUEST_ENABLE_LOCATION = 2;
     public static final int LOCATION_PERMISSION_CODE = 101;
     private static final int PERMISSION_RESULT = 3;
-    private static final int UPDATE_CODE = 4;
 
-    public static Toast global_Toast;
     public static MainActivity m_mainActivity = null;
     public static boolean m_isActive = false;
     public static final String CHANNEL_ID = "default-channel";
@@ -95,25 +101,30 @@ public class MainActivity extends AppCompatActivity {
     public static final String BLUETOOTH_DIALOG = "com.ub.pocketcares.bluetoothDialog";
     private BluetoothAdapter myDevice;
     private BroadcastReceiver bluetoothLocationDialogReceiver;
-    private AppUpdateManager appUpdateManager;
-    private InstallStateUpdatedListener installStateUpdatedListener;
 
-    @SuppressLint("ShowToast")
+    private MFPPush push; // Push client
+    private MFPPushNotificationListener notificationListener; // Notification listener to handle a push sent to the phone
+    private static final String APP_GUID = "2abe5c40-d5aa-4ff0-9b2e-d76327e76ee6";
+    private static final String CLIENT_SECRET = "050967e6-3e93-440f-a09d-22c493ee5566";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appUpdateManager = AppUpdateManagerFactory.create(this);
-        installStateUpdatedListener = state -> {
-            // Log state or install the update.
-            if (state.installStatus() == InstallStatus.DOWNLOADED) {
-                popupForCompleteUpdate();
-            }
-        };
-
-        myDevice = BluetoothAdapter.getDefaultAdapter();
         setContentView(R.layout.activity_main);
-        global_Toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
         m_mainActivity = this;
+
+        BMSClient.getInstance().initialize(this, BMSClient.REGION_US_SOUTH);
+        push = MFPPush.getInstance();
+        MFPPushNotificationOptions options = new MFPPushNotificationOptions();
+        options.setDeviceid(ServerHelper.getDeviceId(m_mainActivity));
+        push.initialize(this, APP_GUID, CLIENT_SECRET, options);
+        notificationListener = message -> {
+            Log.v(IBM_PUSH_NOTIFICATION, "Received a Push Notification: " + message.toString());
+            runOnUiThread(() -> Utility.createDialog(m_mainActivity, "You have been exposed to COVID-19 virus", message.getAlert()));
+        };
+        registerDevice();
+        myDevice = BluetoothAdapter.getDefaultAdapter();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         startCloseEncounterScan();
 
@@ -207,41 +218,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkAppUpdate() {
-        // Returns an intent object that you use to check for an update.
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+    public void registerDevice() {
 
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            Log.v("Update", "Update Priority: " + appUpdateInfo.updatePriority());
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                // Request the update.
+        // Checks for null in case registration has failed previously
+        if (push == null) {
+            push = MFPPush.getInstance();
+        }
+
+        // Creates response listener to handle the response when a device is registered.
+        MFPPushResponseListener registrationResponseListener = new MFPPushResponseListener<String>() {
+            @Override
+            public void onSuccess(String response) {
+                // Split response and convert to JSON object to display User ID confirmation from the backend
+                Log.v(IBM_PUSH_NOTIFICATION, response);
+                String[] resp = response.split("Text: ");
                 try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                            appUpdateInfo,
-                            // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                            AppUpdateType.FLEXIBLE,
-                            // The current activity making the update request.
-                            this,
-                            // Include a request code to later monitor this update request.
-                            UPDATE_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    Toast.makeText(this, "Update Failed!", Toast.LENGTH_SHORT).show();
+                    JSONObject responseJSON = new JSONObject(resp[1]);
+                    Log.i(APP_CLIENT_ID, responseJSON.getString("deviceId"));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                popupForCompleteUpdate();
-            }
-        });
-    }
 
-    private void popupForCompleteUpdate() {
-        DialogInterface.OnClickListener onClickListener = (dialog, which) -> appUpdateManager.completeUpdate();
-        DialogInterface.OnDismissListener onDismissListener = (dialog) -> appUpdateManager.completeUpdate();
-        Utility.createDialog(m_mainActivity, "Update Downloaded",
-                "PocketCare S has successfully downloaded the update, please select OK to install it.",
-                onClickListener, onDismissListener);
+                Log.v(IBM_PUSH_NOTIFICATION, "Successfully registered for push notifications with device id:" + ServerHelper.getDeviceId(m_mainActivity));
+                // Start listening to notification listener now that registration has succeeded
+                push.listen(notificationListener);
+            }
+
+            @Override
+            public void onFailure(MFPPushException exception) {
+                String errLog = "Error registering for push notifications: ";
+                String errMessage = exception.getErrorMessage();
+                int statusCode = exception.getStatusCode();
+
+                // Set error log based on response code and error message
+                if (statusCode == 401) {
+                    errLog += "Cannot authenticate successfully with Bluemix Push instance, ensure your CLIENT SECRET was set correctly.";
+                } else if (statusCode == 404 && errMessage.contains("Push GCM Configuration")) {
+                    errLog += "Push GCM Configuration does not exist, ensure you have configured GCM Push credentials on your Bluemix Push dashboard correctly.";
+                } else if (statusCode == 404 && errMessage.contains("PushApplication")) {
+                    errLog += "Cannot find Bluemix Push instance, ensure your APPLICATION ID was set correctly and your phone can successfully connect to the internet.";
+                } else if (statusCode >= 500) {
+                    errLog += "Bluemix and/or your Push instance seem to be having problems, please try again later.";
+                }
+
+                Log.v(IBM_PUSH_NOTIFICATION, errLog);
+            }
+        };
+
+        push.registerDevice(registrationResponseListener);
     }
 
     public void onSummaryClick(View view) {
@@ -300,7 +324,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkAppUpdate();
+        if (push != null) {
+            push.listen(notificationListener);
+        }
         Intent updateUI = new Intent(CloseContactFragment.ACTION_NOTIFY_BEACON_UI_UPDATE);
         sendBroadcast(updateUI);
         m_isActive = true;
@@ -309,15 +335,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (push != null) {
+            push.hold();
+        }
         m_isActive = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (appUpdateManager != null) {
-            appUpdateManager.unregisterListener(installStateUpdatedListener);
-        }
         m_isActive = false;
     }
 
@@ -437,11 +463,6 @@ public class MainActivity extends AppCompatActivity {
                 requestCode == PERMISSION_RESULT) {
             if (resultCode == RESULT_OK) {
                 startCloseEncounterScan();
-            }
-        }
-        if (requestCode == UPDATE_CODE) {
-            if (resultCode == RESULT_OK) {
-                appUpdateManager.registerListener(installStateUpdatedListener);
             }
         }
     }
