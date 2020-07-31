@@ -40,7 +40,7 @@ PocketCare S is designed to report social distance information without collectin
 Before you begin, make sure you satisfy the following requirements:
 
 1. You are running this on a physical Android device.
-2. The device should at least be running on [Android sdk version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
+2. The device should at least be running on [Android SDK Version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
 3. The device should have Bluetooth LE support. More details about this requirement can be found [here](#how-does-pocketcare-s-work). 
 
 As long as you run this on any modern Android device, the application should work properly. You can check the Bluetooth LE compatibility of your device [here](https://altbeacon.github.io/android-beacon-library/beacon-transmitter-devices.html). 
