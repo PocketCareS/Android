@@ -30,7 +30,6 @@ import androidx.preference.PreferenceManager;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.ub.pocketcares.BuildConfig;
 import com.ub.pocketcares.R;
-import com.ub.pocketcares.backend.BluetoothBeaconDatabaseHelper;
 import com.ub.pocketcares.backend.SecureKeys;
 import com.ub.pocketcares.backend.SessionDatabaseHelper;
 import com.ub.pocketcares.geofencing.GeofenceUtils;
