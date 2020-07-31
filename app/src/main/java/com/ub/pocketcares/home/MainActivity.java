@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
         push = MFPPush.getInstance();
         MFPPushNotificationOptions options = new MFPPushNotificationOptions();
         options.setDeviceid(ServerHelper.getDeviceId(m_mainActivity));
-        options.setIcon("R.drawable.pocketcares_notification_icon");
-        options.setPriority(MFPPushNotificationOptions.Priority.HIGH);
         push.initialize(this, APP_GUID, CLIENT_SECRET, options);
         notificationListener = message -> {
             Log.v(IBM_PUSH_NOTIFICATION, "Received a Push Notification: " + message.toString());
