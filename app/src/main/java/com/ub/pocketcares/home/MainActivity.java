@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -60,14 +59,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Calendar;
 
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.InstallStatus;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.Task;
 import com.ibm.mobilefirstplatform.clientsdk.android.core.api.BMSClient;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPush;
 import com.ibm.mobilefirstplatform.clientsdk.android.push.api.MFPPushException;
@@ -86,6 +77,7 @@ import com.ub.pocketcares.utility.PreferenceTags;
 import com.ub.pocketcares.utility.Utility;
 
 import static com.ub.pocketcares.home.HomeTabFragment.createReportHealthDialog;
+import static com.ub.pocketcares.utility.PreferenceTags.IBM_PUSH_NOTIFICATION;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NOTI_HEALTHSTATUS = 2;
@@ -127,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
         options.setPriority(MFPPushNotificationOptions.Priority.HIGH);
         push.initialize(this, APP_GUID, CLIENT_SECRET, options);
         notificationListener = message -> {
-            Log.v("IbmPush", "Received a Push Notification: " + message.toString());
-            runOnUiThread(() -> Utility.createDialog(m_mainActivity, "Received a Push Notification", message.getAlert()));
+            Log.v(IBM_PUSH_NOTIFICATION, "Received a Push Notification: " + message.toString());
+            runOnUiThread(() -> Utility.createDialog(m_mainActivity, "You have been exposed to COVID-19 virus", message.getAlert()));
         };
         registerDevice();
         myDevice = BluetoothAdapter.getDefaultAdapter();
@@ -238,12 +230,12 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(String response) {
                 // Split response and convert to JSON object to display User ID confirmation from the backend
                 try {
-                    Log.v("IbmPush", response);
+                    Log.v(IBM_PUSH_NOTIFICATION, response);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                Log.v("IbmPush", "Successfully registered for push notifications with device id:" + ServerHelper.getDeviceId(m_mainActivity));
+                Log.v(IBM_PUSH_NOTIFICATION, "Successfully registered for push notifications with device id:" + ServerHelper.getDeviceId(m_mainActivity));
                 // Start listening to notification listener now that registration has succeeded
                 push.listen(notificationListener);
             }
@@ -265,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                     errLog += "Bluemix and/or your Push instance seem to be having problems, please try again later.";
                 }
 
-                Log.v("IbmPush", errLog);
+                Log.v(IBM_PUSH_NOTIFICATION, errLog);
             }
         };
 

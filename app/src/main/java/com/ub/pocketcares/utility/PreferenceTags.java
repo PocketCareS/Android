@@ -28,5 +28,6 @@ public class PreferenceTags {
     public static final String LATEST_HEALTH = "lastHealthState";
     public static final String USAGE_NUM_HEALTHREPORT = "usage_#healthreport";
     public static final String WARNING_LAST_TIME = "lastwarningtime";
+    public static final String IBM_PUSH_NOTIFICATION = "IbmPush";
 
 }
