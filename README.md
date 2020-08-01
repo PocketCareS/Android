@@ -98,7 +98,7 @@ PocketCare S cares values the security and privacy of its users. The app does no
 
 PocketCare S plans to implement automatic contact tracing by collaborating with healthcare organizations in the future. In the current Android application, we have added an experimental feature to show how these notifications would work in the future. 
 
-PocketCare S Android application can get push notification for COVID-19 exposure from the web portal. You can learn more about the process [here](). This is still a work in progress and hence you will need to get the unique App Client ID of the infected person from the Android application itself to notify the users who have been in contact with the infected person. You can get the App Client ID following the guide below. 
+PocketCare S Android application can get push notification for COVID-19 exposure from the web portal. You can learn more about the process [here](https://github.com/PocketCareS/webportal#steps-to-perform-contact-tracing). This is still a work in progress and hence you will need to get the unique App Client ID of the infected person from the Android application itself to notify the users who have been in contact with the infected person. You can get the App Client ID following the guide below. 
 
 ### Getting App Client ID 
 
@@ -115,8 +115,8 @@ Follow these directions for **Android Studio** or **ADB** to get the App Client 
 
 1. Make sure you have ADB installed in your system. Follow this [guide](https://www.xda-developers.com/install-adb-windows-macos-linux/) to install ADB in your system.
 2. Connect your phone to the computer (make sure USB debugging is turned on and the application is running) and open your favorite terminal. 
-3. Type ***adb devices*** and make sure your phone is in the "List of attached devices".
-4. Now to get the value of App Client ID from the logcat type ***adb logcat -s App_Client_ID***.
+3. Type ```adb devices``` and make sure your phone is in the "List of attached devices".
+4. Now to get the value of App Client ID from the logcat type ```adb logcat -s App_Client_ID```.
 5. Copy the value of App Client ID.
 
 
