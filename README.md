@@ -122,9 +122,17 @@ Follow these directions for **Android Studio** or **ADB** to get the App Client 
 
 ## Built With
 
-- [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/) - Used for close contact detection in Android
+### Android 
+- [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/) - Used for close contact detection
+- [High Charts](https://www.highcharts.com/) - Used to visualize data
 - [IBM Push Notifications](https://www.ibm.com/cloud/push-notifications) - Push Notification for Exposure 
-- [High Charts](https://www.highcharts.com/) - Used to visualize data (Web Portal & Android applicato)
+
+### iOS
+- [BeaconMonitor](https://github.com/sebk/BeaconMonitor) - Used for close contact detection
+- [Charts](https://github.com/danielgindi/Charts) - Used to visualize data
+- [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) - Used for encryption
+
+### Server 
 - [Red Hat OpenShift on IBM Cloud](https://www.ibm.com/cloud/openshift)
   - Server using [OpenJDK 8](https://www.ibm.com/cloud/support-for-runtimes)
   - Database using [MongoDB](https://www.ibm.com/cloud/databases-for-mongodb)
