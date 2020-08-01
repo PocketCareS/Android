@@ -16,7 +16,7 @@ PocketCare S is designed to report social distance information without collectin
 2. [The Architecture](#the-architecture)
 3. [Getting Started](#getting-started)
 4. [How does PocketCare S Work?](#how-does-pocketcare-s-work)
-5. [Push Notification for Exposure]()
+5. [Push Notification for Exposure](#push-notifications-for-exposure)
 6. [Built With](#built-with)
 7. [Project Road Map](#project-road-map)
 8. [Additional Information](#additional-information)
@@ -124,7 +124,7 @@ Follow these directions for **Android Studio** or **ADB** to get the App Client 
 
 - [Android Beacon Library](https://altbeacon.github.io/android-beacon-library/) - Used for close contact detection in Android
 - [IBM Push Notifications](https://www.ibm.com/cloud/push-notifications) - Push Notification for Exposure 
-- [High Charts](https://www.highcharts.com/) - Used to visualize data
+- [High Charts](https://www.highcharts.com/) - Used to visualize data (Web Portal & Android applicato)
 - [Red Hat OpenShift on IBM Cloud](https://www.ibm.com/cloud/openshift)
   - Server using [OpenJDK 8](https://www.ibm.com/cloud/support-for-runtimes)
   - Database using [MongoDB](https://www.ibm.com/cloud/databases-for-mongodb)
