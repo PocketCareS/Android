@@ -40,7 +40,7 @@ PocketCare S is designed to report social distance information without collectin
 
 Before you begin, make sure you satisfy the following requirements:
 
-1. You are running this on a physical Android device.
+1. You are running PocketCare S on a physical Android device.
 2. The device should at least be running on [Android SDK Version 21](https://developer.android.com/studio/releases/platforms#5.0) (Android L).
 3. The device should have Bluetooth LE support. More details about this requirement can be found [here](#how-does-pocketcare-s-work). 
 
