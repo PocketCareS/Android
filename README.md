@@ -99,7 +99,7 @@ PocketCare S cares values the security and privacy of its users. The app does no
 
 PocketCare S plans to implement automatic contact tracing by collaborating with healthcare organizations in the future. In the current Android application, we have added an experimental feature to show how these notifications would work in the future. 
 
-PocketCare S Android application can get push notification for COVID-19 exposure from the web portal. You can learn more about the process [here](https://github.com/PocketCareS/webportal#steps-to-perform-contact-tracing). This is still a work in progress and hence you will need to get the unique App Client ID of the infected person from the Android application itself to notify the users who have been in contact with the infected person. You can get the App Client ID following the guide below. 
+PocketCare S Android application can get push notification for COVID-19 exposure from the web portal. You can learn more about the process [here](https://github.com/PocketCareS/WebPortal#steps-to-send-push-notifications-for-exposure-contact-tracing). This is still a work in progress and hence you will need to get the unique App Client ID of the infected person from the Android application itself to notify the users who have been in contact with the infected person. You can get the App Client ID following the guide below. 
 
 ### Getting App Client ID 
 
