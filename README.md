@@ -52,7 +52,7 @@ As long as you run this on any modern Android device, the application should wor
 1. Open the project in Android Studio.
 2. Wait for Gradle build to finish.
 3. Connect your Android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
-4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the [server setup documentation](https://github.com/PocketCareS/server/blob/master/Installation.md) and replace the **serverHost** variable in [ServerHelper](app/src/main/java/com/ub/pocketcares/network/ServerHelper.java) java file with your URL. 
+4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the [server setup documentation](https://github.com/PocketCareS/server/blob/master/Installation.md) and replace the **serverHost** variable in [ServerHelper](https://github.com/PocketCareS/PocketCareS-Android/blob/master/app/src/main/java/com/ub/pocketcares/network/ServerHelper.java#L46) file with your URL. 
 ```java
     private final static String serverHost = "YOUR_SERVER_URL";
 ```
