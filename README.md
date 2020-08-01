@@ -52,7 +52,7 @@ As long as you run this on any modern Android device, the application should wor
 1. Open the project in Android Studio.
 2. Wait for Gradle build to finish.
 3. Connect your Android device to your computer and make sure you have USB debugging turned on. You can follow this [article](https://developer.android.com/studio/debug/dev-options#enable) to enable usb debugging.  
-4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the PocketCareS-Server setup documentation and replace the **serverHost** variable in [ServerHelper](app/src/main/java/com/ub/pocketcares/network/ServerHelper.java) java file with your URL. 
+4. The application is already configured with the IBM server URL. If you want to run server on your local machine follow the [server setup documentation](https://github.com/PocketCareS/server/blob/master/Installation.md) and replace the **serverHost** variable in [ServerHelper](app/src/main/java/com/ub/pocketcares/network/ServerHelper.java) java file with your URL. 
 ```java
     private final static String serverHost = "YOUR_SERVER_URL";
 ```
@@ -109,7 +109,7 @@ Follow these directions for **Android Studio** or **ADB** to get the App Client 
 1. Open the PocketCare S Android project in Android Studio. 
 2. Connect the android device to your computer with the application run. If it is not running, click on the play button and run the application. 
 3. In the bottom of the screen, click on log cat and in the search box paste *App_Client_ID*. This is the tag used to filter the ADB log and get the logged value of App Client.
-4. Copy this value of App Client ID and proceed with the exposure notification [documentation](). 
+4. Copy the value of App Client ID.
 
 #### Using ADB
 
@@ -117,7 +117,7 @@ Follow these directions for **Android Studio** or **ADB** to get the App Client 
 2. Connect your phone to the computer (make sure USB debugging is turned on and the application is running) and open your favorite terminal. 
 3. Type ***adb devices*** and make sure your phone is in the "List of attached devices".
 4. Now to get the value of App Client ID from the logcat type ***adb logcat -s App_Client_ID***.
-5. Copy this value of App Client ID and proceed with the exposure notification [documentation](). 
+5. Copy the value of App Client ID.
 
 
 ## Built With
